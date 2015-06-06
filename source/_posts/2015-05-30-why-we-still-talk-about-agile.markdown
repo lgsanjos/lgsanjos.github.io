@@ -1,0 +1,88 @@
+---
+layout: post
+title: "Why we still talk about Agile?"
+date: 2015-05-30 14:53:52 -0300
+comments: true
+categories: 
+---
+
+<br />
+<p>"Our team has grown too much. We are twelve engineers now, agile says we should be nine or less"</p>
+<h4>  - Said Tom, after realize more engineers will join the team.</h4>
+
+<br />
+<p>"We have code on branches that weren't merge to trunk, this is against continuous delivery, we are not agile!"</p>
+<h4>  - Said Katherine during a retrospective about the process.</h4>
+
+<br />
+<p>"Someone broke the build and it's blocking us! I can't check in my changes so this story will be carried over."</p>
+<h4>  - Said Paul, one day before the iteration end.</h4>
+
+<br />
+
+<p><b>Does this sounds familiar to you?</b> In our every-working-day we hear people complaining process that it is not agile enough, that the managers should be more flexible, the agile worlds says Y but the company does Z.</p>
+
+<p>Sure there are also <b>companies trying to sell Agile all around</b>, claiming they are more afficient with a flexible and geekie environment.</p>
+
+<br />
+<h1>What is not Agile?</h1>
+<br />
+
+<p>At some point on the history, the software development started to spread among hobbist more and more until it becomes a professional area that had to be standardized. At that moment, building a software was analog to civil engineering, so the process of development were based on an apartmant building process.</p>
+
+<p>It was a good practice to capture all the requirements, business details and write down a plan to action. Just like a building blue print, it was the documentation that would lead the execution.</p>
+
+<br />
+<h4>There is a problem here, as you know after an appartment is done no one asks to add a new elevator on that small area on the hall.</h4>
+<br />
+<p>And that's the reality on software business we need to maintain, and by maintain I mean, to add new features, to be up to date on external requirements, laws and etc.</p>
+
+<br />
+<h1>Agile, the origins</h1>
+<br />
+
+<p>Something had to be changed! The costumer would receive the software only when the whole project was complete, it takes so long that probably it is different than expected. And to fix is not that simple.</p>
+
+<p>Sounds like a good idea to don't get too attached to a scope, big scopes are dangerous because increase the delivery time and decrease the chance of success. Do small projects, short releases, to <b>focus on delivering value</b>, instead of trying to predict - adapt to changes - starts to takes place over that <a href="http://en.wikipedia.org/wiki/Waterfall_model">waterfall process</a>.</p>
+
+<p>In 2001 a group of renamed gurus started a new era and created <a href="http://agilemanifesto.org">The Agile Manifesto</a>. It came with a set of twelve principle that companies/teams are encouraged to follow as a sustainable way to build software.</p>
+
+<br />
+<h4>"Our highest priority is to satisfy the customer through early and continuous delivery of valuable software." - Agile Manifesto</h4>
+<br />
+
+<p>Perfect worlds to an imperfect world. No matter who: engineers, project manager, CTO, CEO, chairman, 10 in 10 will agree with this sentence. Because that's the ideal world, To satisfty the customer is the key for companies, who doesn't want that?</p>
+
+<br />
+<h4>Why we still discuss it?</h4>
+<br />
+
+<p>To satisfy means to attend someone expectations, it means that you are going to attend what your customer asks you. If you are one of those smarties you are thinking: "NO! I will do what they actually need".</p>
+
+<br />
+<h4>What if your costumer does not want agile?</h4>
+<br />
+
+<p>The business world is pretty far from the ideal world, sustainability means be profitable in first place and a happy customer is someone who will buy from you once again.</p> 
+
+<p>To push a philosophy (even acknowledged as something good for everyone) to your client is not a smart move. You are telling a banker that you will not sign a contract with dead line, instead you will demonstrated the software incrementally built every two weeks (called interation) and that "online bank system" will be updated in the end of every interation, it's called continuous delivery. <b>I'm not a banker but I would never buy this idea</b>.</p>
+
+<br />
+<h4>How "Agile" are you?</h4>
+<br />
+
+<p>If Agile is a philosofy, process are the execution. It sets the rules and organize people. There is set of well known proposals like: Scrum, XP, Crystal, lean and of course each company adapts to their reality.</p>
+
+<p>In the end of the day, how agile is your company means how agile are the constraints you have. They directly depend of your business model, ie:</p>
+
+<ul>
+	<li><p><b>Consider SaaS company</b>, you probably have a set service that all costumers use, it means you have deadline with yourself. Change the process and no one is impacted, tell everyone to work from home and costumers will never miss them. You have few constraints.</p></li>
+
+	<li><p><b>Consider a ERP or CRM product</b>, that each costumer has it's customizations with different deliveries and demands new feartures every now and then. Who is in charge now?</p></li>
+
+	<li><p>What about a <b>company that writes software for airplanes</b> or a real time system, that require the highest quality, bugs are not acceptable and features rarely changes. It's very different right?</p></li>
+</ul>
+
+
+
+
