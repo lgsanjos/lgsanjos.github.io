@@ -18,6 +18,7 @@ categories:
 <p>"Someone broke the build and it's blocking us! I can't check in my changes so this story will be carried over."</p>
 <h4>  - Said Paul, one day before the iteration end.</h4>
 
+ {{ post.excerpt }}
 <br />
 
 <p><b>Does this sounds familiar to you?</b> In our every-working-day we hear people complaining process that it is not agile enough, that the managers should be more flexible, the agile worlds says Y but the company does Z.</p>
@@ -54,7 +55,7 @@ categories:
 <p>Perfect worlds to an imperfect world. No matter who: engineers, project manager, CTO, CEO, chairman, 10 in 10 will agree with this sentence. Because that's the ideal world, To satisfty the customer is the key for companies, who doesn't want that?</p>
 
 <br />
-<h4>Why we still discuss it?</h4>
+<h1>Why we still discuss it?</h1>
 <br />
 
 <p>To satisfy means to attend someone expectations, it means that you are going to attend what your customer asks you. If you are one of those smarties you are thinking: "NO! I will do what they actually need".</p>
@@ -68,7 +69,7 @@ categories:
 <p>To push a philosophy (even acknowledged as something good for everyone) to your client is not a smart move. You are telling a banker that you will not sign a contract with dead line, instead you will demonstrated the software incrementally built every two weeks (called interation) and that "online bank system" will be updated in the end of every interation, it's called continuous delivery. <b>I'm not a banker but I would never buy this idea</b>.</p>
 
 <br />
-<h4>How "Agile" are you?</h4>
+<h1>How "Agile" are you?</h1>
 <br />
 
 <p>If Agile is a philosofy, process are the execution. It sets the rules and organize people. There is set of well known proposals like: Scrum, XP, Crystal, lean and of course each company adapts to their reality.</p>
