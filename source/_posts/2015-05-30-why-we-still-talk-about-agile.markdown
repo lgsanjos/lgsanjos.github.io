@@ -3,7 +3,7 @@ layout: post
 title: "Why we still talk about Agile?"
 date: 2015-05-30 14:53:52 -0300
 comments: true
-categories: 
+categories: agile
 ---
 
 <br />
@@ -18,7 +18,7 @@ categories:
 <p>"Someone broke the build and it's blocking us! I can't check in my changes so this story will be carried over."</p>
 <h4>  - Said Paul, one day before the iteration end.</h4>
 
- {{ post.excerpt }}
+<!-- more -->
 <br />
 
 <p><b>Does this sounds familiar to you?</b> In our every-working-day we hear people complaining process that it is not agile enough, that the managers should be more flexible, the agile worlds says Y but the company does Z.</p>

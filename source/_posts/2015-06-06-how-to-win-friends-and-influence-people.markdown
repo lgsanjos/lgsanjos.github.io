@@ -3,12 +3,13 @@ layout: post
 title: "How to Win Friends and Influence People -  Dale Carnegie"
 date: 2015-06-06 14:00:52 -0300
 comments: true
-categories: 
+categories: [books, soft skills] 
 ---
 
 A best seller and must read to people who are wants to improve how to handle people in a vast different scenarios.
 This is my notes taken by chapter. 
 
+<!-- more -->
 Side notes
 ===
 
