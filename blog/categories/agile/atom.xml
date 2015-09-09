@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Agile | lgsanjos' Blog]]></title>
+  <title><![CDATA[Category: agile | lgsanjos' Blog]]></title>
   <link href="http://lgsanjos.github.io/blog/categories/agile/atom.xml" rel="self"/>
   <link href="http://lgsanjos.github.io/"/>
-  <updated>2015-09-08T22:32:23-03:00</updated>
+  <updated>2015-09-08T23:50:10-03:00</updated>
   <id>http://lgsanjos.github.io/</id>
   <author>
     <name><![CDATA[lgsanjos]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Why We Still Talk About Agile?]]></title>
+    <title type="html"><![CDATA[Why we still talk about Agile?]]></title>
     <link href="http://lgsanjos.github.io/blog/2015/05/30/why-we-still-talk-about-agile/"/>
     <updated>2015-05-30T14:53:52-03:00</updated>
     <id>http://lgsanjos.github.io/blog/2015/05/30/why-we-still-talk-about-agile</id>

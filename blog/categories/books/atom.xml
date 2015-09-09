@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Books | lgsanjos' Blog]]></title>
+  <title><![CDATA[Category: books | lgsanjos' Blog]]></title>
   <link href="http://lgsanjos.github.io/blog/categories/books/atom.xml" rel="self"/>
   <link href="http://lgsanjos.github.io/"/>
-  <updated>2015-09-08T22:32:23-03:00</updated>
+  <updated>2015-09-08T23:50:10-03:00</updated>
   <id>http://lgsanjos.github.io/</id>
   <author>
     <name><![CDATA[lgsanjos]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[The Goal - Theory of Constraints]]></title>
+    <title type="html"><![CDATA[The Goal - Theory of constraints]]></title>
     <link href="http://lgsanjos.github.io/blog/2015/08/23/the-goal-theory-of-constraints/"/>
     <updated>2015-08-23T17:32:30-03:00</updated>
     <id>http://lgsanjos.github.io/blog/2015/08/23/the-goal-theory-of-constraints</id>
@@ -75,7 +75,7 @@
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[How to Win Friends and Influence People - Dale Carnegie]]></title>
+    <title type="html"><![CDATA[How to Win Friends and Influence People -  Dale Carnegie]]></title>
     <link href="http://lgsanjos.github.io/blog/2015/06/06/how-to-win-friends-and-influence-people/"/>
     <updated>2015-06-06T14:00:52-03:00</updated>
     <id>http://lgsanjos.github.io/blog/2015/06/06/how-to-win-friends-and-influence-people</id>
