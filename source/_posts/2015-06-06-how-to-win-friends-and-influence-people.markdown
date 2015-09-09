@@ -16,10 +16,10 @@ Side notes
 ###Part1:
 ####Fundamental techniques in handling people
 
-1. If you want to gather honey, don't kick over the beehive
-	* Don't criticize people instead incentive them to do differently.
-	* Assume poeple their best in that situation because we never know the whole context to judge.
-	* "Don't criticize them. They are just what we would be under similar cricumstances."
+* If you want to gather honey, don't kick over the beehive
+. Don't criticize people instead incentive them to do differently.
+. Assume poeple their best in that situation because we never know the whole context to judge.
+. "Don't criticize them. They are just what we would be under similar cricumstances."
 
 2. The big secret of dealing with people
   * Sigmund Freud said "Everything you and I do springs from two motives: the sex urge and the desire to be great."
