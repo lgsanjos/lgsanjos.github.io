@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Books | lgsanjos' Blog]]></title>
   <link href="http://lgsanjos.github.io/blog/categories/books/atom.xml" rel="self"/>
   <link href="http://lgsanjos.github.io/"/>
-  <updated>2015-08-21T18:18:54-03:00</updated>
+  <updated>2015-09-08T22:32:23-03:00</updated>
   <id>http://lgsanjos.github.io/</id>
   <author>
     <name><![CDATA[lgsanjos]]></name>
@@ -12,6 +12,67 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[The Goal - Theory of Constraints]]></title>
+    <link href="http://lgsanjos.github.io/blog/2015/08/23/the-goal-theory-of-constraints/"/>
+    <updated>2015-08-23T17:32:30-03:00</updated>
+    <id>http://lgsanjos.github.io/blog/2015/08/23/the-goal-theory-of-constraints</id>
+    <content type="html"><![CDATA[<p>The book tells a story about a factory manager that has an incredibly short deadline of three months to transform the site from a negative ballance and low customer satisfaction into profitable. Meanwhile he has some issues at home with wife and kids and meet an old professor that end up coaching him in the process of change.</p>
+
+<p>The concepts of the theory of constraints are introduced naturally throughout the book as the story goes on, here are my highlights.</p>
+
+<!-- more -->
+
+
+<h2>Detailed version</h2>
+
+<h3>What&rsquo;s your goal?</h3>
+
+<p>When professor {name} asked the factory manager what was the goal, it shows clearly how the stress, short-term-goals and deadlines obfuscate the real goal. {name} guesses the goal was to be as productive as possible, later to satisfy the costumer, quality later on came tothe answer for every company, to make money.</p>
+
+<p>This sounds trivial and useless but it&rsquo;s a good reflection to keep in mind the long-term-goals or else the stress leads a manager to do only what is behind the schedule, reduce quality and others workarounds that will never end.</p>
+
+<p>Meanwhile I was reading this whole procces to understand the company goals I reflected to myself, what is my goal? In life, in my career, on my family where I&rsquo;m heading to, what I&rsquo;m doing to get there and what are the workarounds that I&rsquo;m doing or what is justified by &ldquo;it was always done like this&rdquo;.</p>
+
+<h3>Correct measurement</h3>
+
+<p>Once the goal is clear, the manager must measure the progress towards to the goal. Just like in real world the his company had certain amount of rules and reports that should cover this, but it wasn&rsquo;t. In the end what helped was.</p>
+
+<ul>
+<li>Throughput:</li>
+<li>Operational cost:</li>
+<li>Inventory:</li>
+</ul>
+
+
+<h3>Demand</h3>
+
+<h3>Watch out for local optimization</h3>
+
+<p>Using the book&rsquo;s example, the whole organization were relying on new robots to replace human labor, so it would increase the productivity of the plant. But it&rsquo;s not necessaraly true, this is a local optimization the robots will replace a single piece of the work.</p>
+
+<p>To achieve good results one must identify all steps of the production line, and identify the produtivity of each one individually this will lead to better understand the bottle necks or the areas that must be optimized.</p>
+
+<ul>
+<li>So first, identify all the steps from receiving the inputs until delivering it to the costumer.</li>
+<li>Then, it&rsquo;s obvious wheter one step produces fewer output than the rest, the follwing steps will be slowed down. To have a good productivity all the steps must be equally productive.</li>
+</ul>
+
+
+<h3>Identify dependencies cross process</h3>
+
+<p>Imagine a turn based game, where five players will play always in same order. The game consist in moving match sticks across bowls (simulating a production line). The first player throw the dice, the number it gets will be the amount of matches passed to the next player&rsquo;s bowl. Then second player throw a dice and lets say it is a four, but there are only two match sticks on the bowl, those two will be passed to the next player.</p>
+
+<p>This game represents a process of production line and has some factors like a dice, that is a random number which represents statistical flutuations. Statistical flutuations are variables that are impossible to track because they simple vary all the time, for instance an employee productivity varies based on his/her mood, health, stress and several other factors that can&rsquo;t be predicted nor controlled.</p>
+
+<p>Also the game contains dependents events, it&rsquo;s clearly that the first player will move much more matches than the last one. If you consider this as a productivity index, well we know who will be promoted. And this analogy shows how unfair and ineficent dependencies can be.</p>
+
+<p>The company goal is to move matches all across the bowls, each employee tries to get a six on the dice but often it&rsquo;s not enough because there is no match on the bowl. To achieve the goal minimize the statistical flutuations is a good idea but not always a choice. In the game instead using the dice if always were moved the average three  matches it would be a linear productivity, much better.</p>
+
+<p>Dependent events with this kind of variation</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[How to Win Friends and Influence People - Dale Carnegie]]></title>
@@ -30,15 +91,11 @@ This is my notes taken by chapter.</p>
 
 <h4>Fundamental techniques in handling people</h4>
 
-<ol>
-<li><p>If you want to gather honey, don&rsquo;t kick over the beehive</p>
-
 <ul>
-<li>Don&rsquo;t criticize people instead incentive them to do differently.</li>
-<li>Assume poeple their best in that situation because we never know the whole context to judge.</li>
-<li>&ldquo;Don&rsquo;t criticize them. They are just what we would be under similar cricumstances.&rdquo;</li>
-</ul>
-</li>
+<li><p>If you want to gather honey, don&rsquo;t kick over the beehive
+. Don&rsquo;t criticize people instead incentive them to do differently.
+. Assume poeple their best in that situation because we never know the whole context to judge.
+. &ldquo;Don&rsquo;t criticize them. They are just what we would be under similar cricumstances.&rdquo;</p></li>
 <li><p>The big secret of dealing with people</p></li>
 <li>Sigmund Freud said &ldquo;Everything you and I do springs from two motives: the sex urge and the desire to be great.&rdquo;
 
@@ -56,7 +113,7 @@ This is my notes taken by chapter.</p>
 <li>if there is any secret of success it lies in the ability to get the other person&rsquo;s point of view and see thing from that person&rsquo;s angle as well as from your own.</li>
 </ul>
 </li>
-</ol>
+</ul>
 
 
 <h3>Part2:</h3>
