@@ -4,10 +4,11 @@
 
 url: http://lgsanjos.github.io
 title: lgsanjos' Blog
-subtitle: ""
+subtitle: "I'm a full stack developer and here are some of my thoughts"
 author: lgsanjos
+author_name: "Luiz Guilherme"
 simple_search: https://www.google.com/search
-description:
+description: "I'm a full stack developer and here are some of my thoughts"
 
 # Default date format is "ordinal" (resulting in "July 22nd 2007")
 # You can customize the format as defined in
@@ -19,7 +20,7 @@ date_format: "ordinal"
 subscribe_rss: /atom.xml
 subscribe_email:
 # RSS feeds can list your email address if you like
-email:
+email: lgsanjos@gmail.com
 
 # ----------------------- #
 #    Jekyll & Plugins     #
