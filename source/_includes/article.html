@@ -1,8 +1,8 @@
 {% unless page.no_header %}
 {% if index %}
   <div class="row-fluid">
-    <div class="span2 post-meta">
-	  <h5 class="date-time">{% include post/date.html %}<i class="icon-calendar-empty"></i> {{ time }}</h5>
+    {% if false %}
+      <div class="span2 post-meta">
           <div class="row-fluid">
           {% if site.disqus_short_name and page.comments != false and post.comments != false and site.disqus_show_comment_count == true %}
           <a href="{% if index %}{{ site.url }}{{ root_url }}{{ post.url }}{% endif %}#disqus_thread">Comments </a> <span class="fui-bubble-16"></span>
@@ -15,7 +15,8 @@
           {% endfor %}
           </div>
           {% endif %}
-    </div>
+      </div>
+    {% endif %}
     <div class="span10 post-container">
       <h1 class="link"><a href="{{ root_url }}{{ post.url }}">{{ post.title }}</a></h1>
       {{ content | excerpt }}
