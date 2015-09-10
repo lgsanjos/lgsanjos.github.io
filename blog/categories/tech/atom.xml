@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: tech | lgsanjos' Blog]]></title>
+  <link href="http://lgsanjos.github.io/blog/categories/tech/atom.xml" rel="self"/>
+  <link href="http://lgsanjos.github.io/"/>
+  <updated>2015-09-10T16:23:17-03:00</updated>
+  <id>http://lgsanjos.github.io/</id>
+  <author>
+    <name><![CDATA[lgsanjos]]></name>
+    <email><![CDATA[lgsanjos@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Understanding Promises]]></title>
+    <link href="http://lgsanjos.github.io/blog/2015/09/10/understanding-promises/"/>
+    <updated>2015-09-10T11:19:39-03:00</updated>
+    <id>http://lgsanjos.github.io/blog/2015/09/10/understanding-promises</id>
+    <content type="html"><![CDATA[<p>Promise is an specification to handle async calls. There are several ways to solve this problem a very popular solution is usgin callback arguments. In this article I will introduce promises and do a shallow comparison of both solutions.</p>
+
+<!-- more -->
+
+
+<h1>The problem</h1>
+
+<p>Imagine you need to request some data from a server and once you have the response, you will format this data and display into the screen.</p>
+
+<p>For the sake of simplicity and abstraction, let&rsquo;s consider:
+- The method &ldquo;asyncRequest()&rdquo; that will request some data from an endpoint.
+- Only success case for now, later on we add error handling.</p>
+
+<h2>Using callback</h2>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">asyncRequest</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="c1">// success</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h2>Using promises</h2>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'>  <span class="nx">asyncRequest</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>     <span class="c1">// success</span>
+</span><span class='line'>  <span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h2>Whaat?</h2>
+
+<p>At first glance it&rsquo;s not a big change, but looking more carefully in fact what is happening on the promise example is that the asyncRequest is not triggering the callback function instead it is returning an object that implements the method <strong>then</strong>, and this object (which is called promise) will trigger once it&rsquo;s fullfilled.</p>
+
+<p>Let&rsquo;s keep the baby steps and not dive too fast. So now that we have the response we need to validade this data sending this to another service, to do so we will call asynValidation(data).</p>
+
+<h2>Using callback</h2>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">asyncRequest</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="c1">// asyncRequest succeded</span>
+</span><span class='line'>  <span class="nx">asyncValidation</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="c1">// asyncValidation succeded</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h2>Using promises</h2>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">asyncRequest</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">asyncValidation</span><span class="p">)</span>
+</span><span class='line'>              <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>                  <span class="c1">// asyncValidation succeded</span>
+</span><span class='line'>              <span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h2>Whaaaaaaat?</h2>
+
+<p>Now we are talking, so the benefit of delegating the event triggering is that you can build a chain of execution, and whatever asycnRequest return will be passed as argument to asyncValidation.</p>
+
+<p>To better undestanding, let&rsquo;s think on a possible implementation of the asyncRequest method.</p>
+
+<h2>Using callback</h2>
+
+<p>Ok, this is such a bummer, but I don&rsquo;t want to mess up with any HTTP API, instead I will use a setTimeout to simulate an async process.</p>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">function</span> <span class="nx">asyncRequest</span> <span class="p">(</span><span class="nx">successCallback</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="c1">// do the request using an API</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">response</span> <span class="o">=</span> <span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="nx">some</span> <span class="nx">data</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;;</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>     <span class="nx">successCallback</span><span class="p">(</span><span class="nx">response</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">},</span> <span class="mi">2000</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h2>Using promises</h2>
+
+<p>The example below the variable <strong>q</strong> is a promise library, I will get into it below.</p>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">function</span> <span class="nx">asyncRequest</span> <span class="p">()</span> <span class="p">{</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="c1">// Create a deferred which is the object that will trigger the callback</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">deffered</span> <span class="o">=</span> <span class="nx">q</span><span class="p">.</span><span class="nx">deferred</span><span class="p">();</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">response</span> <span class="o">=</span> <span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="nx">some</span> <span class="nx">data</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;;</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="c1">// here we say that the promise should be fullfilled as success</span>
+</span><span class='line'>    <span class="nx">deffered</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">response</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">},</span> <span class="mi">2000</span><span class="p">);</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span> <span class="k">return</span> <span class="nx">deffered</span><span class="p">.</span><span class="nx">promise</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h2>Enlightening</h2>
+
+<p>The variable <strong>q</strong> is the library that implements a promise solution, when called .deferred it will create a <em>promise manager</em>, I know that&rsquo;s not the best name, but think that this manager owns the promise and also dictated if it will succeed or fail.</p>
+
+<p>Notice that it returns <strong>deferred.promise</strong>, which is the promise itself. Yet there is no definition of success or fail, it is called <strong>pending promise</strong>.</p>
+
+<p>Once the timeout executes the deferred will trigger <strong>.resolve(response)</strong> which is the way to say, this promise succeded, go on with the chain and use this response variable as parameter to the next method.</p>
+
+<p>It means that as soon as the promise is resolved the <strong>then</strong> method will be invoked and it&rsquo;s function will be called.</p>
+
+<h2>Chaining</h2>
+
+<p>Chaining is only possible because the <strong>then</strong> method also retuns a promise, thats will be triggered automatically once it&rsquo;s function is done and it&rsquo;s return value will be carried over to the next function as parameter, so you can do thigs like:</p>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">openSpinnerModal</span><span class="p">()</span>
+</span><span class='line'>         <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">requestData</span><span class="p">)</span>
+</span><span class='line'>         <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">validateData</span><span class="p">)</span>
+</span><span class='line'>         <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">notifyUser</span><span class="p">)</span>
+</span><span class='line'>         <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">closeSpinnerModal</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h2>Failure handling example</h2>
+
+<p>Adding a fail scenario to asyncRequest and asyncValidation.</p>
+
+<h2>Using callback</h2>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">asyncRequest</span><span class="p">(</span>
+</span><span class='line'>  <span class="kd">function</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="c1">// success callback for asyncRequest</span>
+</span><span class='line'>   <span class="nx">asyncValidation</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>     <span class="c1">// success callback for asyncValidation</span>
+</span><span class='line'>     <span class="p">},</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>       <span class="c1">//fail callback for asyncValidation</span>
+</span><span class='line'>     <span class="p">})</span>
+</span><span class='line'>  <span class="p">},</span>
+</span><span class='line'>  <span class="kd">function</span> <span class="p">(</span><span class="nx">exception</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="c1">// fail callback for asyncRequest</span>
+</span><span class='line'>  <span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>Refactoring to a little bit:</p>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">failCallback</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">exception</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="c1">// fail callback for asyncRequest</span>
+</span><span class='line'><span class="p">};</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="kd">var</span> <span class="nx">successCallback</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>   <span class="nx">asyncValidation</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>     <span class="c1">// success callback</span>
+</span><span class='line'>     <span class="p">},</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>       <span class="c1">//fail callback</span>
+</span><span class='line'>     <span class="p">});</span>
+</span><span class='line'><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h2>Using promises</h2>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">asyncRequest</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">asyncValidation</span><span class="p">,</span> <span class="nx">failCallbackForAsyncRequest</span><span class="p">)</span>
+</span><span class='line'>             <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">successForAsyncValidation</span><span class="p">,</span> <span class="nx">failForAsyncValidation</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p><strong>OR</strong></p>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">asyncRequest</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">asyncValidation</span><span class="p">)</span>
+</span><span class='line'>              <span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">exception</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>                <span class="c1">// Handle both failures here</span>
+</span><span class='line'>              <span class="p">});</span><span class="o">&lt;</span><span class="nx">br</span><span class="o">/&gt;</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h2>Shortest conclusion ever</h2>
+
+<p>Chaining is a readable and expressive way to write code, I particularly keep using callbacks for very simple cases but when I notice that it requires me to execute one function after other, I go straight to chaining with promises.</p>
+
+<p>Callbacks inside other callback is a problem well known as <strong>callback hell</strong> this is a good enough reason to give a try for promises.</p>
+
+<p>Also there is much more the <strong>then</strong> and <strong>catch</strong> but it depends on the implementation you will use.
+Another useful method is <strong>.finally()</strong> as it sounds like will always execute as the last element of the chain.</p>
+
+<hr />
+
+<h2>Links</h2>
+
+<p>Hope you have enjoyed and be curious enough to take a look at the promise definition:</p>
+
+<ul>
+<li><p><strong>A+</strong> <a href="http://promisesaplus.com">http://promisesaplus.com</a></p></li>
+<li><p>And some of it&rsquo;s implementations:</p>
+
+<ul>
+<li><strong>Kriskowal</strong> q: <a href="https://github.com/kriskowal/q">https://github.com/kriskowal/q</a></li>
+<li><strong>AngularJS</strong> implementation $q: <a href="https://docs.angularjs.org/api/ng/service/$q">https://docs.angularjs.org/api/ng/service/$q</a></li>
+<li>More <strong>references</strong> on: <a href="https://promisesaplus.com/implementations">https://promisesaplus.com/implementations</a></li>
+</ul>
+</li>
+</ul>
+
+
+<h2>Extra</h2>
+
+<p>The original problem presented here is a piece of a general topic named &ldquo;Communicating Sequential Process&rdquo;, you can check more if it here <a href="https://en.wikipedia.org/wiki/Communicating_sequential_processes">https://en.wikipedia.org/wiki/Communicating_sequential_processes</a> and also some other solutions other than promises and callbacks are listed below.</p>
+]]></content>
+  </entry>
+  
+</feed>

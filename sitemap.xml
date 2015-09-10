@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://lgsanjos.github.io/blog/2015/09/10/understanding-promises/</loc>
+    <lastmod>2015-09-10T11:19:39-03:00</lastmod>
+  </url>
+  <url>
     <loc>http://lgsanjos.github.io/blog/2015/08/23/the-goal-theory-of-constraints/</loc>
     <lastmod>2015-08-23T17:32:30-03:00</lastmod>
   </url>
@@ -26,6 +30,9 @@
   </url>
   <url>
     <loc>http://lgsanjos.github.io/blog/categories/soft-skills/</loc>
+  </url>
+  <url>
+    <loc>http://lgsanjos.github.io/blog/categories/tech/</loc>
   </url>
   <url>
     <loc>http://lgsanjos.github.io/posts/index.html</loc>
