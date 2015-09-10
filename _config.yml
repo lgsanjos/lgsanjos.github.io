@@ -4,6 +4,7 @@
 
 url: http://lgsanjos.github.io
 title: lgsanjos' Blog
+short_name: lgsanjosblog
 subtitle: "I'm a full stack developer and here are some of my thoughts"
 author: lgsanjos
 author_name: "Luiz Guilherme"
@@ -95,8 +96,8 @@ delicious_user:
 delicious_count: 3
 
 # Disqus Comments
-disqus_short_name:
-disqus_show_comment_count: false
+disqus_short_name: lgsanjosblog
+disqus_show_comment_count: true
 
 # Google Analytics
 google_analytics_tracking_id: UA-54137509-4
