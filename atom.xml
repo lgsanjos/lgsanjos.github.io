@@ -4,7 +4,7 @@
   <title><![CDATA[lgsanjos' Blog]]></title>
   <link href="http://lgsanjos.github.io/atom.xml" rel="self"/>
   <link href="http://lgsanjos.github.io/"/>
-  <updated>2015-09-10T16:23:17-03:00</updated>
+  <updated>2015-09-10T16:25:11-03:00</updated>
   <id>http://lgsanjos.github.io/</id>
   <author>
     <name><![CDATA[lgsanjos]]></name>
@@ -18,7 +18,7 @@
     <link href="http://lgsanjos.github.io/blog/2015/09/10/understanding-promises/"/>
     <updated>2015-09-10T11:19:39-03:00</updated>
     <id>http://lgsanjos.github.io/blog/2015/09/10/understanding-promises</id>
-    <content type="html"><![CDATA[<p>Promise is an specification to handle async calls. There are several ways to solve this problem a very popular solution is usgin callback arguments. In this article I will introduce promises and do a shallow comparison of both solutions.</p>
+    <content type="html"><![CDATA[<p>Promise is an specification to handle async calls. There are several ways to solve this problem a very popular solution is using callback arguments. In this article I will introduce promises and do a shallow comparison of both solutions.</p>
 
 <!-- more -->
 
