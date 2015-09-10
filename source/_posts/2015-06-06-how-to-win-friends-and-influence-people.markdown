@@ -6,8 +6,8 @@ comments: true
 categories: [books, soft skills] 
 ---
 
-A best seller and must read to people who are wants to improve how to handle people in a vast different scenarios.
-This is my notes taken by chapter. 
+This is a best seller and a must read for people who wants to improve their soft skills, better approach and understand  people in a vast different scenarios.
+Here are my notes taken by chapter. 
 
 <!-- more -->
 Side notes
