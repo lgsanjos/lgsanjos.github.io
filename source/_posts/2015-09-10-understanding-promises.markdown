@@ -6,7 +6,7 @@ comments: true
 categories: tech 
 ---
 
-Promise is an specification to handle async calls. There are several ways to solve this problem a very popular solution is usgin callback arguments. In this article I will introduce promises and do a shallow comparison of both solutions.
+Promise is an specification to handle async calls. There are several ways to solve this problem a very popular solution is using callback arguments. In this article I will introduce promises and do a shallow comparison of both solutions.
 
 <!-- more -->
 
