@@ -1,5 +1,6 @@
 <!-- Show last 5 posts here -->
 {% for post in paginator.posts %}
+{% unless post.draft %}
 <article>
 
   <header>
@@ -12,6 +13,7 @@
   <div class="entry">{{ post.excerpt }}</div>
 
 </article>
+{% endunless%}
 {% endfor %}
 
 

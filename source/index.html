@@ -6,12 +6,14 @@ layout: default
   {% assign index = true %}
   {% for post in paginator.posts %}
   {% assign content = post.content %}
-    <article>
-      {% include article.html %}
-    </article>
-    {% unless post == paginator.posts.last %}
-    <hr>
-    {% endunless %}
+  {% unless content.draft %}
+      <article>
+        {% include article.html %}
+      </article>
+      {% unless post == paginator.posts.last %}
+      <hr>
+      {% endunless %}
+  {% endunless %}
   {% endfor %}
   <div class="pagination">
     {% if paginator.next_page %}

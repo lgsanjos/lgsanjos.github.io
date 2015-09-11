@@ -34,7 +34,7 @@ asyncRequest(function (data) {
   });
 {% endcodeblock %}
 
-## Whaat?
+## So what?
 
 At first glance it's not a big change, but looking more carefully in fact what is happening on the promise example is that the asyncRequest is not triggering the callback function instead it is returning an object that implements the method **then**, and this object (which is called promise) will trigger once it's fullfilled.
 
