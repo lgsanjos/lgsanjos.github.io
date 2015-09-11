@@ -6,7 +6,7 @@ layout: default
   {% assign index = true %}
   {% for post in paginator.posts %}
   {% assign content = post.content %}
-  {% unless content.draft %}
+  {% unless posa.draft %}
       <article>
         {% include article.html %}
       </article>

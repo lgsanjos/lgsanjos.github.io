@@ -4,6 +4,7 @@ title: "Why we still talk about Agile?"
 date: 2015-05-30 14:53:52 -0300
 comments: true
 draft: false
+published: false
 categories: agile
 ---
 
