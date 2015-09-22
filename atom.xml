@@ -4,7 +4,7 @@
   <title><![CDATA[lgsanjos' Blog]]></title>
   <link href="http://lgsanjos.github.io/atom.xml" rel="self"/>
   <link href="http://lgsanjos.github.io/"/>
-  <updated>2015-09-17T11:18:59-03:00</updated>
+  <updated>2015-09-22T18:32:40-03:00</updated>
   <id>http://lgsanjos.github.io/</id>
   <author>
     <name><![CDATA[lgsanjos]]></name>
@@ -12,6 +12,232 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Using BASH and Git to track your environment growth]]></title>
+    <link href="http://lgsanjos.github.io/blog/2015/09/21/using-bash-and-git-to-track-your-environment-growth/"/>
+    <updated>2015-09-21T17:21:58-03:00</updated>
+    <id>http://lgsanjos.github.io/blog/2015/09/21/using-bash-and-git-to-track-your-environment-growth</id>
+    <content type="html"><![CDATA[<p>The other day I noticed that my test suite was taking over 30 seconds to run. It bothered me and got me thinking <strong>&ldquo;It wasn&rsquo;t like this&hellip;&rdquo;</strong> so I decided to dig in and I realized that there were several small issues that were slowing it down. The fix was straight foward and in the end it was running in 10 seconds (yay!), but I was still concerned with the question: <strong>&ldquo;How it got this bad and no one have noticed?&rdquo;</strong></p>
+
+<p>This is <strong>related to peripheral</strong> view, slightly changes on our environment doesn&rsquo;t come to our attention. Mostly because it&rsquo;s not our main goal neither we track them, so it changes we don&rsquo;t notice until it&rsquo;s that bad.</p>
+
+<p>The <strong>solution</strong> is to keep track of data and manage its growth.</p>
+
+<!-- more -->
+
+
+<h2>Credits</h2>
+
+<p>The script bellow is based on a <a href="http://www.destroyallsoftware.com/">destroy all software</a> podcast that I saw a while ago.</p>
+
+<h2>Step 1 - Benchmark</h2>
+
+<p>We know that execution time that our test framework shows is not so reliable, cause it may or may not count the loading time. To be clear on loading time, if you <strong>rake test</strong> on an empty rails project it takes a few seconds to load all the rake, ruby and rails environment even if there is no test to run. This is the loading time.</p>
+
+<p>Te benchmark properly I recommend to use the command <strong>time</strong>.</p>
+
+<p>Try this on your bash:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">time </span>ls
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>or</strong> try with your test tool</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">time </span>grunt <span class="nb">test</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It gives you the real execution time of a given process also it&rsquo;s an agnostic way to benchmark test and don&rsquo;t rely on your framework output.</p>
+
+<h2>Now what?</h2>
+
+<p>Once we have a good way to benchmark our test execution, now we need to run this for on old revisions of our code.</p>
+
+<h2>Step 2 - Running tests on each revision</h2>
+
+<p>Here is pretty standart, we use git rev-list to display all the hashes from commit 0 to the HEAD.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>git rev-list HEAD --reverse
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Use the reverse order because we want from oldest to the newest.</p>
+
+<p>Before moving on let&rsquo;s restrict the amount of revisions we will use. Just to save time and so you can run it every once in a while.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>git rev-list HEAD...HEAD~3 --reverse
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>So now it should list 3 revisions only.
+And now with this list of commits, we can parse and use each revision using <strong>while read</strong></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'> <span class="k">while</span> <span class="nb">read</span> *name_a_variable* <span class="p">;</span> <span class="k">do</span> *insert your code here* <span class="p">;</span> <span class="k">done</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>so applying it&hellip;</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>git rev-list HEAD...HEAD~3 --reverse <span class="p">|</span> <span class="k">while</span> <span class="nb">read </span>rev<span class="p">;</span> <span class="k">do</span> git log <span class="nv">$rev</span> -1 --oneline<span class="p">;</span> <span class="k">done</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This will be enough to test the while statement, it will pick each revision and display the log for it. I know it&rsquo;s useless but it is good to test each improvement isolated.</p>
+
+<h2>Time to recap</h2>
+
+<p>Fair enough, lets recap: Now we are iterating over each revision on the git history and we are able to run some code on each revision. So now we need to revert our code to that revision, run the tests and capture the running time. To do so you can use <strong>git checkout $rev</strong>.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>git rev-list HEAD...HEAD~3 --reverse <span class="p">|</span> <span class="k">while</span> <span class="nb">read </span>rev<span class="p">;</span> <span class="k">do</span> git log <span class="nv">$rev</span> -1 --oneline <span class="o">&amp;&amp;</span> git checkout -q <span class="nv">$rev</span> <span class="o">&amp;&amp;</span> grunt <span class="nb">test</span><span class="p">;</span> <span class="k">done</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>What happened here:</strong></p>
+
+<ul>
+<li>For each revision it will print the commit message</li>
+<li>Do a checkout -q which silently will go back in time and show the old code</li>
+<li>Run the tests, for me &ldquo;grunt test&rdquo; is what I use</li>
+<li>PS: I like to use &amp;&amp; to separate the statements so If one fails it doesn&rsquo;t go on</li>
+</ul>
+
+
+<p>As we saw on the beggining let&rsquo;s use the command <strong>time</strong> to capture a more accurate execution time. But before running I will give you a tip.</p>
+
+<p>Try to <strong>grep</strong> the time output:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">time </span>git status <span class="p">|</span> grep real
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It will show something like this:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>real  0m0.448s
+</span><span class='line'>user  0m0.026s
+</span><span class='line'>sys 0m0.310s
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It happens because time uses the unix error pipe to print the time, so a simple way is to redirect the error pipe to the success pipe and grep it:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="o">(</span><span class="nb">time </span>git status<span class="o">)</span> 2&gt;<span class="p">&amp;</span><span class="m">1</span> <span class="p">|</span> grep real
+</span><span class='line'>real  0m0.448s
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now we can apply this to the script:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>git rev-list HEAD...HEAD~3 --reverse <span class="p">|</span> <span class="k">while</span> <span class="nb">read </span>rev<span class="p">;</span> <span class="k">do</span> git log <span class="nv">$rev</span> -1 --oneline <span class="o">&amp;&amp;</span> git checkout -q <span class="nv">$rev</span> <span class="o">&amp;&amp;</span> <span class="o">(</span><span class="nb">time </span>grunt <span class="nb">test</span><span class="o">)</span> 2&gt;<span class="p">&amp;</span><span class="m">1</span> <span class="p">|</span> grep real <span class="p">;</span> <span class="k">done</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The output still is not the best, for me I see this:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>6ca82b199faf7453e65543e1015896792d3a76ab Adding instructions on how to run sidekiq on README
+</span><span class='line'>real  0m2.204s
+</span><span class='line'>0003437a0775b1c6df6a6306f68e1c1dcd567400 Solving minor sonar issues
+</span><span class='line'>real  0m1.902s
+</span><span class='line'>0003437a0775b1c6df6a6306f68e1c1dcd567400 Removed dead code
+</span><span class='line'>real  0m2.560s
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>Step 3 - Collect the time output</h1>
+
+<p>Right now we have all the information on screen it is a matter of parsing and collecting them. We can create a table-like output. Just remove this entire line with commit message and use only the revision hash and the time consumed:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>git rev-list HEAD...HEAD~3 --reverse <span class="p">|</span> <span class="k">while</span> <span class="nb">read </span>rev<span class="p">;</span> <span class="k">do</span> git checkout -q <span class="nv">$rev</span> <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">&quot;$rev `(time grunt test 2&gt;&amp;1) | grep real`&quot;</span><span class="p">;</span> <span class="k">done</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The output will be like:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>6ca82b199faf7453e65543e1015896792d3a76ab real 0m2.036s
+</span><span class='line'>e68fce931a1adeb31a639a013b93b7b301ae96c7 real 0m1.865s
+</span><span class='line'>0003437a0775b1c6df6a6306f68e1c1dcd567400 real 0m2.663s
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>So it&rsquo;s a matter of removing this real, we can do using awk:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>git rev-list HEAD...HEAD~3 --reverse <span class="p">|</span> <span class="k">while</span> <span class="nb">read </span>rev<span class="p">;</span> <span class="k">do</span> git checkout -q <span class="nv">$rev</span> <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">&quot;$rev `(time grunt test) 2&gt;&amp;1 | grep real`&quot;</span> <span class="p">|</span> awk <span class="s1">&#39;{print $1 &quot; &quot; $3}&#39;</span><span class="p">;</span> <span class="k">done</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>6ca82b199faf7453e65543e1015896792d3a76ab 0m2.191s
+</span><span class='line'>e68fce931a1adeb31a639a013b93b7b301ae96c7 0m2.049s
+</span><span class='line'>0003437a0775b1c6df6a6306f68e1c1dcd567400 0m2.487s
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now it&rsquo;s good enough to collect the data, if you want date of the commit it&rsquo;s a matter of retrieve this info using the $rev hash and add inside the <strong>echo</strong>.</p>
+
+<h2>Step 4 - Almost done! Run to a sample of history</h2>
+
+<p>According to the ammount of commits you have, you may not want to run for all commits but for a sample of the history, to do so AWK allow us to pick lines that satisfy a <strong>MOD</strong> codition:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>git rev-list <span class="p">|</span> awk <span class="s1">&#39;NR % 100 == 0&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>NR is the register number or line number if you will. To better estimate the size of your sample check the ammount of commits you have:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>git rev-list <span class="p">|</span> wc -l
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>wc -l</strong> is a line counter, so it works very well with a list like this.</p>
+
+<p>Adding this sample restriction back to the script:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>git rev-list HEAD --reverse <span class="p">|</span> awk <span class="s1">&#39;NR % 50 == 0&#39;</span> <span class="p">|</span> <span class="k">while</span> <span class="nb">read </span>rev<span class="p">;</span> <span class="k">do</span> git checkout -q <span class="nv">$rev</span> <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">&quot;$rev `(time grunt test) 2&gt;&amp;1 | grep real`&quot;</span> <span class="p">|</span> awk <span class="s1">&#39;{print $1 &quot; &quot; $3}&#39;</span><span class="p">;</span> <span class="k">done</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>With this you can draw a chart of the time consuming evolution over time. Also if you notice that from one commit to another there is a big gap, dive in and investigate what changed on that rage of commits.</p>
+
+<p>It&rsquo;s nice to radiate this with your team so they will be aware.</p>
+
+<p>There are other metrics that can be extracted, like the size of fizes, files mostly touched and other crazy metrics your imagination let you think of.</p>
+
+<p>I hope you find this useful ;)</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[ReactJS for dummies]]></title>
