@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://lgsanjos.github.io/blog/2015/09/25/having-fun-with-clojure/</loc>
+    <lastmod>2015-09-25T18:10:42-03:00</lastmod>
+  </url>
+  <url>
     <loc>http://lgsanjos.github.io/blog/2015/09/21/using-bash-and-git-to-track-your-environment-growth/</loc>
     <lastmod>2015-09-21T17:21:58-03:00</lastmod>
   </url>
@@ -34,6 +38,9 @@
   </url>
   <url>
     <loc>http://lgsanjos.github.io/blog/categories/tech/</loc>
+  </url>
+  <url>
+    <loc>http://lgsanjos.github.io/blog/categories/functional/</loc>
   </url>
   <url>
     <loc>http://lgsanjos.github.io/posts/index.html</loc>
