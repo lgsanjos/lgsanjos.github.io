@@ -1,12 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>http://lgsanjos.github.io/blog/2015/06/06/how-to-win-friends-and-influence-people/</loc>
-    <lastmod>2015-06-06T14:00:52-03:00</lastmod>
+    <loc>http://lgsanjos.github.io/blog/2015/09/25/having-fun-with-clojure/</loc>
+    <lastmod>2015-09-25T18:10:42-03:00</lastmod>
   </url>
   <url>
-    <loc>http://lgsanjos.github.io/blog/2015/05/30/why-we-still-talk-about-agile/</loc>
-    <lastmod>2015-05-30T14:53:52-03:00</lastmod>
+    <loc>http://lgsanjos.github.io/blog/2015/09/21/using-bash-and-git-to-track-your-environment-growth/</loc>
+    <lastmod>2015-09-21T17:21:58-03:00</lastmod>
+  </url>
+  <url>
+    <loc>http://lgsanjos.github.io/blog/2015/09/14/reactjs-for-dummies/</loc>
+    <lastmod>2015-09-14T11:24:21-03:00</lastmod>
+  </url>
+  <url>
+    <loc>http://lgsanjos.github.io/blog/2015/09/10/understanding-promises/</loc>
+    <lastmod>2015-09-10T11:19:39-03:00</lastmod>
+  </url>
+  <url>
+    <loc>http://lgsanjos.github.io/blog/2015/08/23/the-goal-theory-of-constraints/</loc>
+    <lastmod>2015-08-23T17:32:30-03:00</lastmod>
+  </url>
+  <url>
+    <loc>http://lgsanjos.github.io/blog/2015/06/06/how-to-win-friends-and-influence-people/</loc>
+    <lastmod>2015-06-06T14:00:52-03:00</lastmod>
   </url>
   <url>
     <loc>http://lgsanjos.github.io/blog/archives/</loc>
@@ -15,16 +31,19 @@
     <loc>http://lgsanjos.github.io/</loc>
   </url>
   <url>
-    <loc>http://lgsanjos.github.io/blog/categories/agile/</loc>
-  </url>
-  <url>
     <loc>http://lgsanjos.github.io/blog/categories/books/</loc>
   </url>
   <url>
     <loc>http://lgsanjos.github.io/blog/categories/soft-skills/</loc>
   </url>
   <url>
+    <loc>http://lgsanjos.github.io/blog/categories/tech/</loc>
+  </url>
+  <url>
+    <loc>http://lgsanjos.github.io/blog/categories/functional/</loc>
+  </url>
+  <url>
     <loc>http://lgsanjos.github.io/posts/index.html</loc>
-    <lastmod>2015-08-21T15:33:53-03:00</lastmod>
+    <lastmod>2015-09-11T15:08:27-03:00</lastmod>
   </url>
 </urlset>

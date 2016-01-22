@@ -1,0 +1,810 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: tech | lgsanjos' Blog]]></title>
+  <link href="http://lgsanjos.github.io/blog/categories/tech/atom.xml" rel="self"/>
+  <link href="http://lgsanjos.github.io/"/>
+  <updated>2015-09-25T18:36:08-03:00</updated>
+  <id>http://lgsanjos.github.io/</id>
+  <author>
+    <name><![CDATA[lgsanjos]]></name>
+    <email><![CDATA[lgsanjos@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Having fun with Clojure]]></title>
+    <link href="http://lgsanjos.github.io/blog/2015/09/25/having-fun-with-clojure/"/>
+    <updated>2015-09-25T18:10:42-03:00</updated>
+    <id>http://lgsanjos.github.io/blog/2015/09/25/having-fun-with-clojure</id>
+    <content type="html"><![CDATA[<p>This is a short post, it is more to advice who is learning <strong>functional programming</strong>, this idea came to my mind after me and a friend of mine were talking about some classic problems and the functional approachs to solve them, after a while we decided to go and solve some stuff on <a href="http://www.4clojure.com">4Clojure</a> which is really fun and I&rsquo;m here to recommend it to you.</p>
+
+<!-- more -->
+
+
+<p>If you never been there, it&rsquo;s a platform that presents you small problems as it introduces you to the Clojure language. After acomplishing each exercise you can see the other user&rsquo;s solution. So progressively you learn clojure with the tutorial but also check what real experienced developers do and how their code look like.</p>
+
+<p>To learn each new command it&rsquo;s a good ideia to check out on the official documentation <a href="http://clojure.org/documentation">here</a> and this <a href="http://clojure.org/cheatsheet">cheatsheet</a> with some code samples is very usefull too.</p>
+
+<p>You can follow me and check some of my answers. <a href="https://www.4clojure.com/user/lgsanjos">Here</a> is my profile and on github I have published some of my answers on <a href="https://github.com/lgsanjos/4clojure_exercies">this</a> repo.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Using BASH and Git to track your environment growth]]></title>
+    <link href="http://lgsanjos.github.io/blog/2015/09/21/using-bash-and-git-to-track-your-environment-growth/"/>
+    <updated>2015-09-21T17:21:58-03:00</updated>
+    <id>http://lgsanjos.github.io/blog/2015/09/21/using-bash-and-git-to-track-your-environment-growth</id>
+    <content type="html"><![CDATA[<p>The other day I noticed that my test suite was taking over 30 seconds to run. It bothered me and got me thinking <strong>&ldquo;It wasn&rsquo;t like this&hellip;&rdquo;</strong> so I decided to dig in and I realized that there were several small issues that were slowing it down. The fix was straight foward and in the end it was running in 10 seconds (yay!), but I was still concerned with the question: <strong>&ldquo;How it got this bad and no one have noticed?&rdquo;</strong></p>
+
+<p>This is <strong>related to peripheral</strong> view, slightly changes on our environment doesn&rsquo;t come to our attention. Mostly because it&rsquo;s not our main goal neither we track them, so it changes we don&rsquo;t notice until it&rsquo;s that bad.</p>
+
+<p>The <strong>solution</strong> is to keep track of data and manage its growth.</p>
+
+<!-- more -->
+
+
+<h2>Credits</h2>
+
+<p>The script bellow is based on a <a href="http://www.destroyallsoftware.com/">destroy all software</a> podcast that I saw a while ago.</p>
+
+<h2>Step 1 - Benchmark</h2>
+
+<p>We know that execution time that our test framework shows is not so reliable, cause it may or may not count the loading time. To be clear on loading time, if you <strong>rake test</strong> on an empty rails project it takes a few seconds to load all the rake, ruby and rails environment even if there is no test to run. This is the loading time.</p>
+
+<p>Te benchmark properly I recommend to use the command <strong>time</strong>.</p>
+
+<p>Try this on your bash:</p>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">time </span>ls
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p><strong>or</strong> try with your test tool</p>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">time </span>grunt <span class="nb">test</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>It gives you the real execution time of a given process also it&rsquo;s an agnostic way to benchmark test and don&rsquo;t rely on your framework output.</p>
+
+<h2>Now what?</h2>
+
+<p>Once we have a good way to benchmark our test execution, now we need to run this for on old revisions of our code.</p>
+
+<h2>Step 2 - Running tests on each revision</h2>
+
+<p>Here is pretty standart, we use git rev-list to display all the hashes from commit 0 to the HEAD.</p>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>git rev-list HEAD <span class="p">&amp;</span>ndash<span class="p">;</span>reverse
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>Use the reverse order because we want from oldest to the newest.</p>
+
+<p>Before moving on let&rsquo;s restrict the amount of revisions we will use. Just to save time and so you can run it every once in a while.</p>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>git rev-list HEAD<span class="p">&amp;</span>hellip<span class="p">;</span>HEAD~3 <span class="p">&amp;</span>ndash<span class="p">;</span>reverse
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>So now it should list 3 revisions only.
+And now with this list of commits, we can parse and use each revision using <strong>while read</strong></p>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'> <span class="k">while</span> <span class="nb">read</span> &lt;em&gt;name_a_variable&lt;/em&gt; <span class="p">;</span> <span class="k">do</span> &lt;em&gt;insert your code here&lt;/em&gt; <span class="p">;</span> <span class="k">done</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>so applying it&hellip;</p>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>git rev-list HEAD<span class="p">&amp;</span>hellip<span class="p">;</span>HEAD~3 <span class="p">&amp;</span>ndash<span class="p">;</span>reverse <span class="p">|</span> <span class="k">while</span> <span class="nb">read </span>rev<span class="p">;</span> <span class="k">do</span> git log <span class="nv">$rev</span> -1 <span class="p">&amp;</span>ndash<span class="p">;</span>oneline<span class="p">;</span> <span class="k">done</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>This will be enough to test the while statement, it will pick each revision and display the log for it. I know it&rsquo;s useless but it is good to test each improvement isolated.</p>
+
+<h2>Time to recap</h2>
+
+<p>Fair enough, lets recap: Now we are iterating over each revision on the git history and we are able to run some code on each revision. So now we need to revert our code to that revision, run the tests and capture the running time. To do so you can use <strong>git checkout $rev</strong>.</p>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>git rev-list HEAD<span class="p">&amp;</span>hellip<span class="p">;</span>HEAD~3 <span class="p">&amp;</span>ndash<span class="p">;</span>reverse <span class="p">|</span> <span class="k">while</span> <span class="nb">read </span>rev<span class="p">;</span> <span class="k">do</span> git log <span class="nv">$rev</span> -1 <span class="p">&amp;</span>ndash<span class="p">;</span>oneline <span class="p">&amp;</span>amp<span class="p">;&amp;</span>amp<span class="p">;</span> git checkout -q <span class="nv">$rev</span> <span class="p">&amp;</span>amp<span class="p">;&amp;</span>amp<span class="p">;</span> grunt <span class="nb">test</span><span class="p">;</span> <span class="k">done</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p><strong>What happened here:</strong></p>
+
+<ul>
+<li>For each revision it will print the commit message</li>
+<li>Do a checkout -q which silently will go back in time and show the old code</li>
+<li>Run the tests, for me &ldquo;grunt test&rdquo; is what I use</li>
+<li>PS: I like to use &amp;&amp; to separate the statements so If one fails it doesn&rsquo;t go on</li>
+</ul>
+
+
+<p>As we saw on the beggining let&rsquo;s use the command <strong>time</strong> to capture a more accurate execution time. But before running I will give you a tip.</p>
+
+<p>Try to <strong>grep</strong> the time output:</p>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">time </span>git status <span class="p">|</span> grep real
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>It will show something like this:</p>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>real  0m0.448s
+</span><span class='line'>user  0m0.026s
+</span><span class='line'>sys 0m0.310s
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>It happens because time uses the unix error pipe to print the time, so a simple way is to redirect the error pipe to the success pipe and grep it:</p>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="o">(</span><span class="nb">time </span>git status<span class="o">)</span> 2&gt;<span class="p">&amp;</span>amp<span class="p">;</span><span class="m">1</span> <span class="p">|</span> grep real
+</span><span class='line'>real  0m0.448s
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>Now we can apply this to the script:</p>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>git rev-list HEAD<span class="p">&amp;</span>hellip<span class="p">;</span>HEAD~3 <span class="p">&amp;</span>ndash<span class="p">;</span>reverse <span class="p">|</span> <span class="k">while</span> <span class="nb">read </span>rev<span class="p">;</span> <span class="k">do</span> git log <span class="nv">$rev</span> -1 <span class="p">&amp;</span>ndash<span class="p">;</span>oneline <span class="p">&amp;</span>amp<span class="p">;&amp;</span>amp<span class="p">;</span> git checkout -q <span class="nv">$rev</span> <span class="p">&amp;</span>amp<span class="p">;&amp;</span>amp<span class="p">;</span> <span class="o">(</span><span class="nb">time </span>grunt <span class="nb">test</span><span class="o">)</span> 2&gt;<span class="p">&amp;</span>amp<span class="p">;</span><span class="m">1</span> <span class="p">|</span> grep real <span class="p">;</span> <span class="k">done</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>The output still is not the best, for me I see this:</p>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>6ca82b199faf7453e65543e1015896792d3a76ab Adding instructions on how to run sidekiq on README
+</span><span class='line'>real  0m2.204s
+</span><span class='line'>0003437a0775b1c6df6a6306f68e1c1dcd567400 Solving minor sonar issues
+</span><span class='line'>real  0m1.902s
+</span><span class='line'>0003437a0775b1c6df6a6306f68e1c1dcd567400 Removed dead code
+</span><span class='line'>real  0m2.560s
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h1>Step 3 - Collect the time output</h1>
+
+<p>Right now we have all the information on screen it is a matter of parsing and collecting them. We can create a table-like output. Just remove this entire line with commit message and use only the revision hash and the time consumed:</p>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>git rev-list HEAD<span class="p">&amp;</span>hellip<span class="p">;</span>HEAD~3 <span class="p">&amp;</span>ndash<span class="p">;</span>reverse <span class="p">|</span> <span class="k">while</span> <span class="nb">read </span>rev<span class="p">;</span> <span class="k">do</span> git checkout -q <span class="nv">$rev</span> <span class="p">&amp;</span>amp<span class="p">;&amp;</span>amp<span class="p">;</span> <span class="nb">echo</span> <span class="p">&amp;</span>ldquo<span class="p">;</span><span class="nv">$rev</span> &lt;code&gt;<span class="o">(</span><span class="nb">time </span>grunt <span class="nb">test </span>2<span class="p">&amp;</span>gt<span class="p">;&amp;</span>amp<span class="p">;</span>1<span class="o">)</span> <span class="p">|</span> grep real&lt;/code&gt;<span class="p">&amp;</span>rdquo<span class="p">;;</span> <span class="k">done</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>The output will be like:</p>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>6ca82b199faf7453e65543e1015896792d3a76ab real 0m2.036s
+</span><span class='line'>e68fce931a1adeb31a639a013b93b7b301ae96c7 real 0m1.865s
+</span><span class='line'>0003437a0775b1c6df6a6306f68e1c1dcd567400 real 0m2.663s
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>So it&rsquo;s a matter of removing this real, we can do using awk:</p>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>git rev-list HEAD<span class="p">&amp;</span>hellip<span class="p">;</span>HEAD~3 <span class="p">&amp;</span>ndash<span class="p">;</span>reverse <span class="p">|</span> <span class="k">while</span> <span class="nb">read </span>rev<span class="p">;</span> <span class="k">do</span> git checkout -q <span class="nv">$rev</span> <span class="p">&amp;</span>amp<span class="p">;&amp;</span>amp<span class="p">;</span> <span class="nb">echo</span> <span class="p">&amp;</span>ldquo<span class="p">;</span><span class="nv">$rev</span> &lt;code&gt;<span class="o">(</span><span class="nb">time </span>grunt <span class="nb">test</span><span class="o">)</span> 2<span class="p">&amp;</span>gt<span class="p">;&amp;</span>amp<span class="p">;</span><span class="m">1</span> <span class="p">|</span> grep real&lt;/code&gt;<span class="p">&amp;</span>rdquo<span class="p">;</span> <span class="p">|</span> awk <span class="p">&amp;</span>lsquo<span class="p">;</span><span class="o">{</span>print <span class="nv">$1</span> <span class="p">&amp;</span>ldquo<span class="p">;</span> <span class="p">&amp;</span>rdquo<span class="p">;</span> <span class="nv">$3</span><span class="o">}</span><span class="p">&amp;</span>rsquo<span class="p">;;</span> <span class="k">done</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>6ca82b199faf7453e65543e1015896792d3a76ab 0m2.191s
+</span><span class='line'>e68fce931a1adeb31a639a013b93b7b301ae96c7 0m2.049s
+</span><span class='line'>0003437a0775b1c6df6a6306f68e1c1dcd567400 0m2.487s
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>Now it&rsquo;s good enough to collect the data, if you want date of the commit it&rsquo;s a matter of retrieve this info using the $rev hash and add inside the <strong>echo</strong>.</p>
+
+<h2>Step 4 - Almost done! Run to a sample of history</h2>
+
+<p>According to the ammount of commits you have, you may not want to run for all commits but for a sample of the history, to do so AWK allow us to pick lines that satisfy a <strong>MOD</strong> codition:</p>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>git rev-list <span class="p">|</span> awk <span class="p">&amp;</span>lsquo<span class="p">;</span>NR % <span class="nv">100</span> <span class="o">==</span> 0<span class="p">&amp;</span>rsquo<span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>NR is the register number or line number if you will. To better estimate the size of your sample check the ammount of commits you have:</p>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>git rev-list <span class="p">|</span> wc -l
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p><strong>wc -l</strong> is a line counter, so it works very well with a list like this.</p>
+
+<p>Adding this sample restriction back to the script:</p>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>git rev-list HEAD <span class="p">&amp;</span>ndash<span class="p">;</span>reverse <span class="p">|</span> awk <span class="p">&amp;</span>lsquo<span class="p">;</span>NR % <span class="nv">50</span> <span class="o">==</span> 0<span class="p">&amp;</span>rsquo<span class="p">;</span> <span class="p">|</span> <span class="k">while</span> <span class="nb">read </span>rev<span class="p">;</span> <span class="k">do</span> git checkout -q <span class="nv">$rev</span> <span class="p">&amp;</span>amp<span class="p">;&amp;</span>amp<span class="p">;</span> <span class="nb">echo</span> <span class="p">&amp;</span>ldquo<span class="p">;</span><span class="nv">$rev</span> &lt;code&gt;<span class="o">(</span><span class="nb">time </span>grunt <span class="nb">test</span><span class="o">)</span> 2<span class="p">&amp;</span>gt<span class="p">;&amp;</span>amp<span class="p">;</span><span class="m">1</span> <span class="p">|</span> grep real&lt;/code&gt;<span class="p">&amp;</span>rdquo<span class="p">;</span> <span class="p">|</span> awk <span class="p">&amp;</span>lsquo<span class="p">;</span><span class="o">{</span>print <span class="nv">$1</span> <span class="p">&amp;</span>ldquo<span class="p">;</span> <span class="p">&amp;</span>rdquo<span class="p">;</span> <span class="nv">$3</span><span class="o">}</span><span class="p">&amp;</span>rsquo<span class="p">;;</span> <span class="k">done</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>With this you can draw a chart of the time consuming evolution over time. Also if you notice that from one commit to another there is a big gap, dive in and investigate what changed on that rage of commits.</p>
+
+<p>It&rsquo;s nice to radiate this with your team so they will be aware.</p>
+
+<p>There are other metrics that can be extracted, like the size of fizes, files mostly touched and other crazy metrics your imagination let you think of.</p>
+
+<p>I hope you find this useful ;)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[ReactJS for dummies]]></title>
+    <link href="http://lgsanjos.github.io/blog/2015/09/14/reactjs-for-dummies/"/>
+    <updated>2015-09-14T11:24:21-03:00</updated>
+    <id>http://lgsanjos.github.io/blog/2015/09/14/reactjs-for-dummies</id>
+    <content type="html"><![CDATA[<p>After almost two years working with AngularJS a new project came to me with few presentation rules but high performance was requires. So I took a look again on the frameworks around and decided to give a try for ReactJS. Here are my thoughts about it so far, and some quick explanation for those who never saw it before.</p>
+
+<!-- more -->
+
+
+<h2>A brief intro</h2>
+
+<p>ReactJs is a tool developed by Facebook to generate and manipulate DOM (Document Object Model, it is a tree of objects that the browser produces when parse the HTML). You can think of ReactJS as the V on MVC, it does not provide you service layer nor controllers, nor routing by default. Sure there are plugins and ways o implement this but it&rsquo;s beyond the standard.</p>
+
+<p>For now let&rsquo;s keep it simple and think on view only. React is very efficient mostly because  it keeps in memory it&rsquo;s own version of the DOM tree, it means that it reduces a lot the comunication between browser which apparently is expensive.</p>
+
+<h2>What else?</h2>
+
+<p>It drives you to encapsulate <strong>HTML</strong> and Javascript in components, let&rsquo;s say you have a table and a header that allow the user to reorder the collumns, in general manner you would select the table <strong>id</strong> and change the html order, without any regard of boundaries, you may implement the javascript in a separate file with a completely different name than the HTML. So we treat the whole HTML, CSS as global, right?</p>
+
+<p>On ReactJS way, you would encapsulate the JS that manipulates that specific HTML in one component.</p>
+
+<h2>But how does that look like?</h2>
+
+<p>The simplest example:</p>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'>  <span class="kd">var</span> <span class="nx">MyComponent</span> <span class="o">=</span> <span class="nx">React</span><span class="p">.</span><span class="nx">createClass</span><span class="p">({</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="c1">// This is an API method that must be implemented and return the html that will be rendered</span>
+</span><span class='line'><span class="nx">render</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="p">(</span><span class="o">&amp;</span><span class="nx">lt</span><span class="p">;</span><span class="nx">div</span><span class="o">&amp;</span><span class="nx">gt</span><span class="p">;</span><span class="nx">Hello</span> <span class="nx">world</span><span class="o">&amp;</span><span class="nx">lt</span><span class="p">;</span><span class="err">/div&amp;gt;);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span> <span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h2>What we can notice</h2>
+
+<ul>
+<li>Now we are using JS to generate html</li>
+<li>A piece of html is being encapsulated inside a JS component</li>
+<li>A piece of html is being returned as first class type</li>
+<li>There are methods that API relies and are not obvious for me</li>
+</ul>
+
+
+<h2>Explanation</h2>
+
+<p>First of all, this is not pure JS it is actually called JSX, so it should be precompiled to generate proper &ldquo;browser friendly input&rdquo;. How to precompile?
+Well, you can use <strong>NodeJS</strong> as engine and a task executer like <strong>grunt</strong> or <strong>gulp</strong> that will trigger as part of deploy/test/preview task to apply the ReactJS precompiler.</p>
+
+<p>This explain how you can return HTML, which in my opinion is great, so you can break down your render function calling other JS functions that also return HTML.</p>
+
+<p>Sure there are also a few downsides, for instance the attribute <strong>class</strong> that we use to set a <strong>CSS</strong> class should be named as <strong>classFor</strong>, the reason is&hellip; well it&rsquo;s the way it is to work.</p>
+
+<p>Some more examples:</p>
+
+<h2>Using JS to populate the content</h2>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'>  <span class="kd">var</span> <span class="nx">MyComponent</span> <span class="o">=</span> <span class="nx">React</span><span class="p">.</span><span class="nx">createClass</span><span class="p">({</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="kd">var</span> <span class="nx">toBeDisplayed</span> <span class="o">=</span> <span class="p">[</span> <span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="nx">Hello</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;,</span> <span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="nx">world</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;,</span> <span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="nx">my</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;,</span> <span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="nx">friend</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;],</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="nx">print</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">list</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">list</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">word</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">return</span> <span class="p">(</span><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">word</span><span class="p">}</span><span class="o">&lt;</span><span class="err">/p&gt;);</span>
+</span><span class='line'>    <span class="p">});</span>
+</span><span class='line'>  <span class="p">},</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="nx">render</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="p">(</span><span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">print</span><span class="p">(</span><span class="nx">toBeDisplayed</span><span class="p">)}</span><span class="o">&lt;</span><span class="err">/div&gt;);</span>
+</span><span class='line'>  <span class="p">}</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h2>Hold on!</h2>
+
+<p>It&rsquo;s <strong>not recommended</strong> to use variables inside component because components have the concept of state, and when a state change it assumes that the UI needs to be rerendered.
+Take a look below:</p>
+
+<h2>Changing the state and update the UI</h2>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'>  <span class="kd">var</span> <span class="nx">MyComponent</span> <span class="o">=</span> <span class="nx">React</span><span class="p">.</span><span class="nx">createClass</span><span class="p">({</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="c1">// returns an object which contain all the state variable with default value</span>
+</span><span class='line'>  <span class="nx">getInitialState</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>   <span class="k">return</span> <span class="p">{</span>
+</span><span class='line'>       <span class="nx">toBeDisplayed</span><span class="o">:</span> <span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="nx">Default</span> <span class="nx">value</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;;</span>
+</span><span class='line'>     <span class="p">};</span>
+</span><span class='line'>  <span class="p">},</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="nx">updateDataAsync</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">toBeDisplayed</span> <span class="o">=</span> <span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="nx">I</span> <span class="nx">changed</span> <span class="k">this</span> <span class="nx">data</span><span class="o">!&amp;</span><span class="nx">rsquo</span><span class="p">;;</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="p">},</span> <span class="mi">2000</span><span class="p">);</span>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="p">},</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="c1">// This is also from API, it triggers once the render is done</span>
+</span><span class='line'>  <span class="nx">componentDidMount</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">this</span><span class="p">.</span><span class="nx">updateDataAsync</span><span class="p">();</span>
+</span><span class='line'>  <span class="p">},</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="nx">render</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="p">(</span><span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">toBeDisplayed</span><span class="p">}</span><span class="o">&lt;</span><span class="err">/div&gt;);</span>
+</span><span class='line'>  <span class="p">}</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h2>Components composition and parameters</h2>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="kd">var</span> <span class="nx">FancyPrint</span> <span class="o">=</span> <span class="nx">Ract</span><span class="p">.</span><span class="nx">createClass</span><span class="p">({</span>
+</span><span class='line'>    <span class="nx">render</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">return</span> <span class="p">(</span><span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">text</span><span class="o">&lt;</span><span class="sr">/h1&gt;);&lt;br/</span><span class="o">&gt;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">});</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="kd">var</span> <span class="nx">MyComponent</span> <span class="o">=</span> <span class="nx">React</span><span class="p">.</span><span class="nx">createClass</span><span class="p">({</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="nx">render</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="p">(</span><span class="o">&amp;</span><span class="nx">lt</span><span class="p">;</span><span class="nx">FancyPrint</span> <span class="nx">text</span><span class="o">=</span><span class="s1">&#39;Hello world&#39;</span> <span class="o">/&amp;</span><span class="nx">gt</span><span class="p">;);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span> <span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h2>this.props ?</h2>
+
+<p>Yes, whatever you get as arguments are properties and you should handle them as constants inside your component, if you need to manipulate and change you better move the value to the State.</p>
+
+<p>Also you can pass an event as property for sure.</p>
+
+<h2>Overall</h2>
+
+<ul>
+<li>Component driven feels like building the HTML in a <strong>OO</strong> fashion.</li>
+<li>Based on my experience I can tell you that there are very few situations which the standard attributes were changed and usually is easy to find references on internet.</li>
+<li>One thing that bothers me is when special methods are triggered and is not clear to me the whole lifecycle, for React there are few events I&rsquo;ll show later.</li>
+</ul>
+
+
+<h2>Ok so far? Let&rsquo;s imagine&hellip;</h2>
+
+<p>I won&rsquo;t write down the entire code here, it&rsquo;s not my intention to write a tutorial right now, but probably it will be my next post.</p>
+
+<p>But what do you think, if your main page could look like this:</p>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">MetadataHeader</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="nx">scripts</span><span class="o">/</span><span class="nx">MetadatHeader</span><span class="p">.</span><span class="nx">js</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;);</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">PageHeader</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="nx">scripts</span><span class="o">/</span><span class="nx">PageHeader</span><span class="p">.</span><span class="nx">js</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;);</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">SideMenu</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="nx">scripts</span><span class="o">/</span><span class="nx">SideMenu</span><span class="p">.</span><span class="nx">js</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;);</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">MainContent</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="nx">scripts</span><span class="o">/</span><span class="nx">MainContent</span><span class="p">.</span><span class="nx">js</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;);</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">Footer</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="nx">scripts</span><span class="o">/</span><span class="nx">Footer</span><span class="p">.</span><span class="nx">js</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;);</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="kd">var</span> <span class="nx">Page</span> <span class="o">=</span> <span class="nx">React</span><span class="p">.</span><span class="nx">createClass</span><span class="p">({</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="nx">getInitialState</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="p">{</span> <span class="nx">currentPage</span><span class="o">:</span> <span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="nx">index</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;</span> <span class="p">};</span>
+</span><span class='line'>  <span class="p">},</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="nx">changeContent</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">currentPage</span> <span class="o">=</span> <span class="nx">next</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">},</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="nx">render</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="p">(</span>
+</span><span class='line'>      <span class="o">&lt;</span><span class="nx">html</span><span class="o">&gt;</span>
+</span><span class='line'>        <span class="o">&lt;</span><span class="nx">MetadataHeader</span> <span class="o">/&gt;</span>
+</span><span class='line'>        <span class="o">&lt;</span><span class="nx">body</span><span class="o">&gt;</span>
+</span><span class='line'>          <span class="o">&lt;</span><span class="nx">PageHeader</span> <span class="o">/&gt;</span>
+</span><span class='line'>          <span class="o">&lt;</span><span class="nx">SideMenu</span> <span class="nx">onClickMenu</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">changeContent</span><span class="p">}</span><span class="o">/&gt;</span>
+</span><span class='line'>          <span class="o">&lt;</span><span class="nx">MainContent</span> <span class="nx">display</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">currentPage</span><span class="p">}</span><span class="o">/&gt;</span>
+</span><span class='line'>          <span class="o">&lt;</span><span class="nx">Footer</span> <span class="o">/&gt;</span>
+</span><span class='line'>        <span class="o">&lt;</span><span class="err">/body&gt;</span>
+</span><span class='line'>      <span class="o">&lt;</span><span class="err">/html&gt;</span>
+</span><span class='line'>    <span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>Doesn&rsquo;t look great? The best part is that any javascript that updates the DOM, MUST be placed inside the componente that renders the DOM. So it keeps organized and React will render only whatever is necessary.</p>
+
+<p>Parent component can pass argumets to its children, arguments can be variables or a callback event. So a children component can notify other components when something happen.</p>
+
+<h2>Extras points</h2>
+
+<ul>
+<li><strong>Official website:</strong> <a href="http://facebook.github.io/react/">http://facebook.github.io/react/</a></li>
+<li><strong>Community:</strong> There are a good amount of free plugins available, take a look: <a href="http://react.rocks/">http://react.rocks/</a></li>
+<li><strong>Cheatsheet:</strong> A good reference <a href="http://ricostacruz.com/cheatsheets/react.html">http://ricostacruz.com/cheatsheets/react.html</a></li>
+<li><strong>Yeoman and generators</strong> This is a easy simple way to setup a new project, this generator will create gulp and it&rsquo;s test/preview/deploy pipeline for free <a href="https://github.com/randylien/generator-react-gulp-browserify">https://github.com/randylien/generator-react-gulp-browserify</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Understanding Promises]]></title>
+    <link href="http://lgsanjos.github.io/blog/2015/09/10/understanding-promises/"/>
+    <updated>2015-09-10T11:19:39-03:00</updated>
+    <id>http://lgsanjos.github.io/blog/2015/09/10/understanding-promises</id>
+    <content type="html"><![CDATA[<p>Promise is an specification to handle async calls. There are several ways to solve this problem a very popular solution is using callback arguments. In this article I will introduce promises and do a shallow comparison of both solutions.</p>
+
+<!-- more -->
+
+
+<h1>The problem</h1>
+
+<p>Imagine you need to request some data from a server and once you have the response, you will format this data and display into the screen.</p>
+
+<p>For the sake of simplicity and abstraction, let&rsquo;s consider:
+- The method &ldquo;asyncRequest()&rdquo; that will request some data from an endpoint.
+- Only success case for now, later on we add error handling.</p>
+
+<h2>Using callback</h2>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">asyncRequest</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="c1">// success</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h2>Using promises</h2>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'>  <span class="nx">asyncRequest</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>     <span class="c1">// success</span>
+</span><span class='line'>  <span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h2>So what?</h2>
+
+<p>At first glance it&rsquo;s not a big change, but looking more carefully in fact what is happening on the promise example is that the asyncRequest is not triggering the callback function instead it is returning an object that implements the method <strong>then</strong>, and this object (which is called promise) will trigger once it&rsquo;s fullfilled.</p>
+
+<p>Let&rsquo;s keep the baby steps and not dive too fast. So now that we have the response we need to validade this data sending this to another service, to do so we will call asynValidation(data).</p>
+
+<h2>Using callback</h2>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">asyncRequest</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="c1">// asyncRequest succeded</span>
+</span><span class='line'>  <span class="nx">asyncValidation</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="c1">// asyncValidation succeded</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h2>Using promises</h2>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">asyncRequest</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">asyncValidation</span><span class="p">)</span>
+</span><span class='line'>              <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>                  <span class="c1">// asyncValidation succeded</span>
+</span><span class='line'>              <span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h2>Whaaaaaaat?</h2>
+
+<p>Now we are talking, so the benefit of delegating the event triggering is that you can build a chain of execution, and whatever asycnRequest return will be passed as argument to asyncValidation.</p>
+
+<p>To better undestanding, let&rsquo;s think on a possible implementation of the asyncRequest method.</p>
+
+<h2>Using callback</h2>
+
+<p>Ok, this is such a bummer, but I don&rsquo;t want to mess up with any HTTP API, instead I will use a setTimeout to simulate an async process.</p>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">function</span> <span class="nx">asyncRequest</span> <span class="p">(</span><span class="nx">successCallback</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="c1">// do the request using an API</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">response</span> <span class="o">=</span> <span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="nx">some</span> <span class="nx">data</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;;</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>     <span class="nx">successCallback</span><span class="p">(</span><span class="nx">response</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">},</span> <span class="mi">2000</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h2>Using promises</h2>
+
+<p>The example below the variable <strong>q</strong> is a promise library, I will get into it below.</p>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">function</span> <span class="nx">asyncRequest</span> <span class="p">()</span> <span class="p">{</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="c1">// Create a deferred which is the object that will trigger the callback</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">deffered</span> <span class="o">=</span> <span class="nx">q</span><span class="p">.</span><span class="nx">deferred</span><span class="p">();</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">response</span> <span class="o">=</span> <span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="nx">some</span> <span class="nx">data</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;;</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="c1">// here we say that the promise should be fullfilled as success</span>
+</span><span class='line'>    <span class="nx">deffered</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">response</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">},</span> <span class="mi">2000</span><span class="p">);</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span> <span class="k">return</span> <span class="nx">deffered</span><span class="p">.</span><span class="nx">promise</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h2>Enlightening</h2>
+
+<p>The variable <strong>q</strong> is the library that implements a promise solution, when called .deferred it will create a <em>promise manager</em>, I know that&rsquo;s not the best name, but think that this manager owns the promise and also dictated if it will succeed or fail.</p>
+
+<p>Notice that it returns <strong>deferred.promise</strong>, which is the promise itself. Yet there is no definition of success or fail, it is called <strong>pending promise</strong>.</p>
+
+<p>Once the timeout executes the deferred will trigger <strong>.resolve(response)</strong> which is the way to say, this promise succeded, go on with the chain and use this response variable as parameter to the next method.</p>
+
+<p>It means that as soon as the promise is resolved the <strong>then</strong> method will be invoked and it&rsquo;s function will be called.</p>
+
+<h2>Chaining</h2>
+
+<p>Chaining is only possible because the <strong>then</strong> method also retuns a promise, thats will be triggered automatically once it&rsquo;s function is done and it&rsquo;s return value will be carried over to the next function as parameter, so you can do thigs like:</p>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">openSpinnerModal</span><span class="p">()</span>
+</span><span class='line'>         <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">requestData</span><span class="p">)</span>
+</span><span class='line'>         <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">validateData</span><span class="p">)</span>
+</span><span class='line'>         <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">notifyUser</span><span class="p">)</span>
+</span><span class='line'>         <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">closeSpinnerModal</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h2>Failure handling example</h2>
+
+<p>Adding a fail scenario to asyncRequest and asyncValidation.</p>
+
+<h2>Using callback</h2>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">asyncRequest</span><span class="p">(</span>
+</span><span class='line'>  <span class="kd">function</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="c1">// success callback for asyncRequest</span>
+</span><span class='line'>   <span class="nx">asyncValidation</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>     <span class="c1">// success callback for asyncValidation</span>
+</span><span class='line'>     <span class="p">},</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>       <span class="c1">//fail callback for asyncValidation</span>
+</span><span class='line'>     <span class="p">})</span>
+</span><span class='line'>  <span class="p">},</span>
+</span><span class='line'>  <span class="kd">function</span> <span class="p">(</span><span class="nx">exception</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="c1">// fail callback for asyncRequest</span>
+</span><span class='line'>  <span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>Refactoring to a little bit:</p>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">failCallback</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">exception</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="c1">// fail callback for asyncRequest</span>
+</span><span class='line'><span class="p">};</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="kd">var</span> <span class="nx">successCallback</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>   <span class="nx">asyncValidation</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>     <span class="c1">// success callback</span>
+</span><span class='line'>     <span class="p">},</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>       <span class="c1">//fail callback</span>
+</span><span class='line'>     <span class="p">});</span>
+</span><span class='line'><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h2>Using promises</h2>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">asyncRequest</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">asyncValidation</span><span class="p">,</span> <span class="nx">failCallbackForAsyncRequest</span><span class="p">)</span>
+</span><span class='line'>             <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">successForAsyncValidation</span><span class="p">,</span> <span class="nx">failForAsyncValidation</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p><strong>OR</strong></p>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">asyncRequest</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">asyncValidation</span><span class="p">)</span>
+</span><span class='line'>              <span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">exception</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>                <span class="c1">// Handle both failures here</span>
+</span><span class='line'>              <span class="p">});</span><span class="o">&lt;</span><span class="nx">br</span><span class="o">/&gt;</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h2>Shortest conclusion ever</h2>
+
+<p>Chaining is a readable and expressive way to write code, I particularly keep using callbacks for very simple cases but when I notice that it requires me to execute one function after other, I go straight to chaining with promises.</p>
+
+<p>Callbacks inside other callback is a problem well known as <strong>callback hell</strong> this is a good enough reason to give a try for promises.</p>
+
+<p>Also there is much more the <strong>then</strong> and <strong>catch</strong> but it depends on the implementation you will use.
+Another useful method is <strong>.finally()</strong> as it sounds like will always execute as the last element of the chain.</p>
+
+<hr />
+
+<h2>Links</h2>
+
+<p>Hope you have enjoyed and be curious enough to take a look at the promise definition:</p>
+
+<ul>
+<li><p><strong>A+</strong> <a href="http://promisesaplus.com">http://promisesaplus.com</a></p></li>
+<li><p>And some of it&rsquo;s implementations:</p>
+
+<ul>
+<li><strong>Kriskowal</strong> q: <a href="https://github.com/kriskowal/q">https://github.com/kriskowal/q</a></li>
+<li><strong>AngularJS</strong> implementation $q: <a href="https://docs.angularjs.org/api/ng/service/$q">https://docs.angularjs.org/api/ng/service/$q</a></li>
+<li>More <strong>references</strong> on: <a href="https://promisesaplus.com/implementations">https://promisesaplus.com/implementations</a></li>
+</ul>
+</li>
+</ul>
+
+
+<h2>Extra</h2>
+
+<p>The original problem presented here is a piece of a general topic named &ldquo;Communicating Sequential Process&rdquo;, you can check more if it here <a href="https://en.wikipedia.org/wiki/Communicating_sequential_processes">https://en.wikipedia.org/wiki/Communicating_sequential_processes</a> and also some other solutions other than promises and callbacks are listed below.</p>
+]]></content>
+  </entry>
+  
+</feed>

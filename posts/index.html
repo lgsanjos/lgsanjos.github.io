@@ -1,6 +1,10 @@
 <!-- Show last 5 posts here -->
 {% for post in paginator.posts %}
+<<<<<<< HEAD
 {% unless post.draft %}
+=======
+{% unless post.draft%}
+>>>>>>> a281da84b1c52d8fa5ee3f388c2a28205db070cf
 <article>
 
   <header>
@@ -13,7 +17,11 @@
   <div class="entry">{{ post.excerpt }}</div>
 
 </article>
+<<<<<<< HEAD
 {% endunless%}
+=======
+{% endunless %}
+>>>>>>> a281da84b1c52d8fa5ee3f388c2a28205db070cf
 {% endfor %}
 
 
