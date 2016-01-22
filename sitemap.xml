@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>http://lgsanjos.github.io/blog/2015/09/25/having-fun-with-clojure/</loc>
-    <lastmod>2015-09-25T18:10:42-03:00</lastmod>
+    <loc>http://lgsanjos.github.io/blog/2016/01/13/setup-integration-tests-from-scratch/</loc>
+    <lastmod>2016-01-13T22:13:26-02:00</lastmod>
   </url>
   <url>
     <loc>http://lgsanjos.github.io/blog/2015/09/21/using-bash-and-git-to-track-your-environment-growth/</loc>
@@ -40,10 +40,10 @@
     <loc>http://lgsanjos.github.io/blog/categories/tech/</loc>
   </url>
   <url>
-    <loc>http://lgsanjos.github.io/blog/categories/functional/</loc>
+    <loc>http://lgsanjos.github.io/blog/categories/testing/</loc>
   </url>
   <url>
     <loc>http://lgsanjos.github.io/posts/index.html</loc>
-    <lastmod>2015-09-11T15:08:27-03:00</lastmod>
+    <lastmod>2016-01-22T18:09:19-02:00</lastmod>
   </url>
 </urlset>

@@ -4,7 +4,7 @@
   <title><![CDATA[lgsanjos' Blog]]></title>
   <link href="http://lgsanjos.github.io/atom.xml" rel="self"/>
   <link href="http://lgsanjos.github.io/"/>
-  <updated>2015-09-25T18:36:08-03:00</updated>
+  <updated>2016-01-22T18:14:55-02:00</updated>
   <id>http://lgsanjos.github.io/</id>
   <author>
     <name><![CDATA[lgsanjos]]></name>
@@ -14,20 +14,451 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Having fun with Clojure]]></title>
-    <link href="http://lgsanjos.github.io/blog/2015/09/25/having-fun-with-clojure/"/>
-    <updated>2015-09-25T18:10:42-03:00</updated>
-    <id>http://lgsanjos.github.io/blog/2015/09/25/having-fun-with-clojure</id>
-    <content type="html"><![CDATA[<p>This is a short post, it is more to advice who is learning <strong>functional programming</strong>, this idea came to my mind after me and a friend of mine were talking about some classic problems and the functional approachs to solve them, after a while we decided to go and solve some stuff on <a href="http://www.4clojure.com">4Clojure</a> which is really fun and I&rsquo;m here to recommend it to you.</p>
+    <title type="html"><![CDATA[Setup Integration Tests with Capybara]]></title>
+    <link href="http://lgsanjos.github.io/blog/2016/01/13/setup-integration-tests-from-scratch/"/>
+    <updated>2016-01-13T22:13:26-02:00</updated>
+    <id>http://lgsanjos.github.io/blog/2016/01/13/setup-integration-tests-from-scratch</id>
+    <content type="html"><![CDATA[<p>This is a tutorial to setup an entire integration test project based on <strong>selenium</strong>, <strong>capybara</strong> and <strong>phantomjs</strong>. This is a purely black box text, so no matter the language you used on your website it should be helpful.</p>
 
 <!-- more -->
 
 
-<p>If you never been there, it&rsquo;s a platform that presents you small problems as it introduces you to the Clojure language. After acomplishing each exercise you can see the other user&rsquo;s solution. So progressively you learn clojure with the tutorial but also check what real experienced developers do and how their code look like.</p>
+<h2>First things first</h2>
 
-<p>To learn each new command it&rsquo;s a good ideia to check out on the official documentation <a href="http://clojure.org/documentation">here</a> and this <a href="http://clojure.org/cheatsheet">cheatsheet</a> with some code samples is very usefull too.</p>
+<h3>Dependencies</h3>
 
-<p>You can follow me and check some of my answers. <a href="https://www.4clojure.com/user/lgsanjos">Here</a> is my profile and on github I have published some of my answers on <a href="https://github.com/lgsanjos/4clojure_exercies">this</a> repo.</p>
+<p>On an empty directory, let&rsquo;s create the Gemfile with a basic content, like:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="n">source</span> <span class="s1">&#39;http://rubygems.org&#39;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">#specify here your ruby version</span>
+</span><span class='line'>  <span class="n">ruby</span> <span class="s1">&#39;2.2.2&#39;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1"># Use the lastest version first, once it&#39;s working fine update this file</span>
+</span><span class='line'>  <span class="n">gem</span> <span class="s1">&#39;cucumber&#39;</span>
+</span><span class='line'>  <span class="n">gem</span> <span class="s1">&#39;selenium-webdriver&#39;</span>
+</span><span class='line'>  <span class="n">gem</span> <span class="s1">&#39;poltergeist&#39;</span>
+</span><span class='line'>  <span class="n">gem</span> <span class="s1">&#39;phantomjs&#39;</span><span class="p">,</span> <span class="ss">:require</span> <span class="o">=&gt;</span> <span class="s1">&#39;phantomjs/poltergeist&#39;</span>
+</span><span class='line'>  <span class="n">gem</span> <span class="s1">&#39;rspec&#39;</span>
+</span><span class='line'>  <span class="n">gem</span> <span class="s1">&#39;capybara&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Save this file and type down on your terminal:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>  bundle install
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It is pretty standard, should be fine.</p>
+
+<h3>Setup</h3>
+
+<p>Cucumber is the test runner that will look for .feature files and step_definitions. The web thing is all related to selenium or poltegeist, don&rsquo;t bother with this right now, let&rsquo;s stick with the cucumber first.</p>
+
+<p>On the terminal, type down:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>  cucumber --init
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>it should create a structure like this:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>.
+</span><span class='line'>├── Gemfile
+</span><span class='line'>├── Gemfile.lock
+</span><span class='line'>├── README.md
+</span><span class='line'>└── features
+</span><span class='line'>    ├── step_definitions
+</span><span class='line'>    └── support
+</span><span class='line'>        ├── env.rb
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>That is enough to run cucumber, of course we haven&rsquo;t written any tests so far but it&rsquo;s good to check the engines :). Type &ldquo;cucumber&rdquo; on your terminal and you should see this:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>-&gt; cucumber
+</span><span class='line'>
+</span><span class='line'><span class="m">0</span> scenarios
+</span><span class='line'><span class="m">0</span> steps
+</span><span class='line'>0m0.000s
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Writing the first scenario</h2>
+
+<p>For the first scenario we won&rsquo;t touch the website yet, lets begin with a simple test and go throught the basics of cucumber.</p>
+
+<h3>Creating the test file</h3>
+
+<p>The tests should be placed on the feature folder. For the sake of simplicity we will write a test for the login feature (the most vanilla feature I can thing of).</p>
+
+<p>Create a file named &ldquo;login.feature&rdquo; on the feature folder and write down a very simple scenario like this:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='cucumber'><span class='line'><span class="k">Feature:</span><span class="nf"> Login</span>
+</span><span class='line'>
+</span><span class='line'><span class="nf">  </span><span class="k">Scenario:</span><span class="nf"> Login failed</span>
+</span><span class='line'><span class="k">    Given </span><span class="nf">I visit my website</span>
+</span><span class='line'><span class="nf">    </span><span class="k">And </span><span class="nf">I&#39;m on the login page</span>
+</span><span class='line'><span class="nf">    </span><span class="k">When </span><span class="nf">I type down a wrong user credentials</span>
+</span><span class='line'><span class="nf">    </span><span class="k">Then </span><span class="nf">a failure modal shows up</span>
+</span><span class='line'><span class="nf">    </span><span class="k">And </span><span class="nf">I should see &#39;Login failed&#39; as error message</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This is a tipical example of cucumber scenario, if you run <strong>cucumber</strong> on terminal again, you will see that it found the test but there is no implementation of the step definiitons.</p>
+
+<h3>Step definitions</h3>
+
+<p>When you execute cucumber, its engine parses all the &ldquo;.feature&rdquo; files and for each step description it tries to match a step definition. As you can see there is already a folder named &ldquo;Step definitions&rdquo; where we will place them.</p>
+
+<p>Create a file named <strong>login_steps.rb</strong> with this:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Given</span> <span class="sr">/^I visit my website$/</span> <span class="k">do</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">And</span> <span class="sr">/^I&#39;m on the login page$/</span> <span class="k">do</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">When</span> <span class="sr">/^I type down a wrong user credentials$/</span> <span class="k">do</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">Then</span> <span class="sr">/^a failure modal shows up$/</span> <span class="k">do</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">And</span> <span class="sr">/^I should see &#39;(.\*)&#39; as error message$/</span> <span class="k">do</span> <span class="o">|</span><span class="n">message</span><span class="o">|</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>As you can see, the definitions are matched by <strong>ruby regex</strong>, before we continue a few considerations:</p>
+
+<ul>
+<li><p>The prefix <strong>Given</strong>, <strong>When</strong>, <strong>Then</strong> not necessary need to match. But it would be good if it does :p</p></li>
+<li><p>Whatever is inside the bars // is a regex pattern and you can research about ruby regex to understand better.</p>
+
+<ul>
+<li><p>The ^ means the <strong>string should start</strong> with that pattern.</p></li>
+<li><p>The $ means the <strong>string should end</strong> with that pattern.</p></li>
+<li><p>The . means <strong>any character</strong>.</p></li>
+<li><p>The * means <strong>any amount of repetitions</strong>.</p></li>
+</ul>
+</li>
+</ul>
+
+
+<p>Now your tests should run successfully, because we have no implementations yet.</p>
+
+<h2>Configuring Capybara</h2>
+
+<h3>Env.rb</h3>
+
+<p>This file will load before the tests execution, you should place here all the environment realted setup. Don&rsquo;t think of this as a hook to clean database or anything like that, later I&rsquo;ll show you a better place to do it.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;capybara/cucumber&#39;</span>
+</span><span class='line'><span class="c1"># this is will be important so rspec will use capybara&#39;s matchers</span>
+</span><span class='line'><span class="kp">include</span> <span class="no">Capybara</span><span class="o">::</span><span class="no">Node</span><span class="o">::</span><span class="no">Matchers</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">driver</span> <span class="o">=</span> <span class="ss">:selenium</span>
+</span><span class='line'>  <span class="no">Capybara</span><span class="o">.</span><span class="n">configure</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">config</span><span class="o">.</span><span class="n">app_host</span> <span class="o">=</span> <span class="s1">&#39;http://yourdomain.com/&#39;</span>
+</span><span class='line'>      <span class="n">config</span><span class="o">.</span><span class="n">run_server</span> <span class="o">=</span> <span class="kp">false</span>
+</span><span class='line'>      <span class="n">config</span><span class="o">.</span><span class="n">default_driver</span> <span class="o">=</span> <span class="n">driver</span>
+</span><span class='line'>      <span class="n">config</span><span class="o">.</span><span class="n">current_driver</span> <span class="o">=</span> <span class="n">driver</span>
+</span><span class='line'>      <span class="n">config</span><span class="o">.</span><span class="n">javascript_driver</span> <span class="o">=</span> <span class="n">driver</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This configuration is enough to setup capybara with the selenium webdriver and notice the variable <strong>run_server=false</strong> it means, your website should be running before you run the tests.</p>
+
+<p>PS: The files inside support folder are standard ruby files, so you can add &ldquo;puts&rdquo;, read system variables, create function or simply require other files to better organize your settings.</p>
+
+<h2>The driver</h2>
+
+<h3>What it is?</h3>
+
+<p>There are several complexities to communicate with the browser, each browser expose a different API, each platform has it&rsquo;s difference as well, so there are several abstractions to aliviate the developer of all this pain. The driver is one this abstraction on the browser level, so what you write in selenium running on firefox should run fine on chrome.</p>
+
+<p>Capybara is another level of abstraction to handle multiple drivers also provides a DSL that is ruby-like and makes our life much easier.</p>
+
+<h3>Your best friend: page</h3>
+
+<p>Back to the test, each test scenario should to open the browser, load your URL and then comunicate with the loaded page. To do it we will use a global variable named <strong>page</strong>, it represents all the DOM and expose methods that you can interact with it.</p>
+
+<p>Back on our step definitions, on the method &lsquo;I visit my Website&rsquo; add this (make sure to set your url).</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>    <span class="n">visit</span> <span class="s1">&#39;http://localhost:3000/&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This command will open the browser and navigate to the specified URL.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>   <span class="n">expect</span><span class="p">(</span><span class="n">page</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">have_title</span> <span class="s1">&#39;My Title&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>   And here we are using the <strong>rspec</strong> matchers to help us assert the page title. The variable <strong>page</strong> is assigned after <strong>visit</strong> is called, so you must call first <strong>visit</strong>.</p>
+
+<p><strong>Tip:</strong> I like to add this validation just after visiting a website, it will force the test to wait until the page is loaded so it will move on to the next step.</p>
+
+<h3>The API</h3>
+
+<p>I won&rsquo;t get in details here because there is a good documentation for Capybara and lot&rsquo;s of examples all over the internet, take a look on the following links and you should be fine.</p>
+
+<ul>
+<li><a href="http://www.rubydoc.info/github/jnicklas/capybara/master#navigating">Capybara DOCS</a></li>
+<li><a href="https://github.com/jnicklas/capybara">Capybara examples</a></li>
+</ul>
+
+
+<h3>Example</h3>
+
+<p>One possible way to implement all the steps is like this:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Given</span><span class="p">(</span><span class="sr">/^I visit my webpage$/</span><span class="p">)</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">visit</span> <span class="s1">&#39;hhtp://localhost:3000/&#39;</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">And</span><span class="p">(</span><span class="sr">/^Iim on the login page$/</span><span class="p">)</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">expect</span><span class="p">(</span><span class="n">page</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">have_title</span> <span class="s1">&#39;Login&#39;</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">When</span><span class="p">(</span><span class="sr">/^I type down a wrong user credentials$/</span><span class="p">)</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">fill_in</span> <span class="ss">:login</span><span class="p">,</span> <span class="ss">:with</span> <span class="o">=&gt;</span> <span class="s1">&#39;wrong login&#39;</span>
+</span><span class='line'>    <span class="n">fill_in</span> <span class="ss">:password</span><span class="p">,</span> <span class="ss">:with</span> <span class="o">=&gt;</span> <span class="s1">&#39;wrong password&#39;</span>
+</span><span class='line'>    <span class="n">click_button</span> <span class="s1">&#39;Sign in&#39;</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">Then</span><span class="p">(</span><span class="sr">/^a failure modal shows up$/</span><span class="p">)</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">expect</span><span class="p">(</span><span class="n">page</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">have_selector</span> <span class="s1">&#39;.modal-dialog&#39;</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">And</span><span class="p">(</span><span class="sr">/^I should see &#39;(.\*)&#39; as error message$/</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">message</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">page</span><span class="o">.</span><span class="n">has_selector?</span><span class="p">(</span><span class="s1">&#39;div#error_message&#39;</span><span class="p">,</span> <span class="ss">:text</span> <span class="o">=&gt;</span> <span class="n">message</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Bonus</h2>
+
+<h3>Hooks</h3>
+
+<p>To execute code <strong>before</strong> or <strong>after</strong> each scenario/test you can use hooks, by creating a file named hooks on the support folder, with the given content:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Before</span> <span class="k">do</span>
+</span><span class='line'>    <span class="c1"># runs before each scenario</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">Before</span> <span class="k">do</span> <span class="o">|</span><span class="n">scenario</span><span class="o">|</span>
+</span><span class='line'>  <span class="c1"># Same as previous but receive the scenario as argument just in case you want to get the title or description.</span>
+</span><span class='line'>  <span class="no">Rails</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span> <span class="s2">&quot;Starting scenario: </span><span class="si">#{</span><span class="n">scenario</span><span class="o">.</span><span class="n">title</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">After</span> <span class="k">do</span>
+</span><span class='line'>    <span class="c1"># runs after each scenario</span>
+</span><span class='line'>    <span class="c1"># For all hooks the scenario argument is optional, so it would work After do |scenario|  as well</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">BeforeStep</span>
+</span><span class='line'>  <span class="c1"># Do something before each step.</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">AfterStep</span>
+</span><span class='line'>  <span class="c1"># Do something after each step.</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">Around</span><span class="p">(</span><span class="s1">&#39;@fast&#39;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">scenario</span><span class="p">,</span> <span class="n">block</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">block</span><span class="o">.</span><span class="n">call</span>
+</span><span class='line'>    <span class="c1">#It select all scenarios tagged as @fast and will execute the test when you execute block.call</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><a href="https://github.com/cucumber/cucumber/wiki/Hooks">Official documentation</a></p>
+
+<h3>PhantomJS</h3>
+
+<p>Tired of the browser poping up on your screen? Do you want to run it on a server with no UI? Headless browser are the solution, a very handy one is PhantomJS and it&rsquo;s driver Potergeist :P</p>
+
+<p>To install PhantomJs follow this link <a href="http://phantomjs.org/">http://phantomjs.org/</a></p>
+
+<p>Once it is installed, the setup we did above is enough to use it! Just change the <strong>env.rb</strong> file, assign the driver variable to <strong>:poltergesit</strong>.</p>
+
+<p>It will run all the tests against a headless browser, it&rsquo;s much faster but you may have inconsistent results because it&rsquo;s a different browser.</p>
+
+<h3>Page Objects</h3>
+
+<p>As you write more and more tests, you will notice that there are duplications and the maintance becomes expensive, for instance if the page title has changed, now you need to update all the steps that assert the page title.</p>
+
+<p><strong>Page Objects</strong> is a concept that everything related to a page whould be encapsulated into an object and the steps definition would interact only with this object.</p>
+
+<p>Based on the example we did here, the implementation could be like this:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Given</span><span class="p">(</span><span class="sr">/^I visit my webpage$/</span><span class="p">)</span> <span class="k">do</span>
+</span><span class='line'>   <span class="vi">@loginPage</span> <span class="o">=</span> <span class="no">LoginPage</span><span class="o">.</span><span class="n">visit</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">And</span><span class="p">(</span><span class="sr">/^Iim on the login page$/</span><span class="p">)</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">expect</span><span class="p">(</span><span class="vi">@loginPage</span><span class="o">.</span><span class="n">displayingCorrectTitle</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">be_truthy</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">When</span><span class="p">(</span><span class="sr">/^I type down a wrong user credentials$/</span><span class="p">)</span> <span class="k">do</span>
+</span><span class='line'>    <span class="vi">@loginPage</span><span class="o">.</span><span class="n">login</span> <span class="s1">&#39;wrong login&#39;</span>
+</span><span class='line'>    <span class="vi">@loginPage</span><span class="o">.</span><span class="n">password</span> <span class="s1">&#39;wrong password&#39;</span>
+</span><span class='line'>    <span class="vi">@loginPage</span><span class="o">.</span><span class="n">sign_in</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">Then</span><span class="p">(</span><span class="sr">/^a failure modal shows up$/</span><span class="p">)</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">expect</span><span class="p">(</span><span class="vi">@loginPage</span><span class="o">.</span><span class="n">showingErrorDialog?</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">be_truthy</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">And</span><span class="p">(</span><span class="sr">/^I should see &#39;(.\*)&#39; as error message$/</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">message</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">expect</span><span class="p">(</span><span class="vi">@loginPage</span><span class="o">.</span><span class="n">displayingCorrectErrorMessage?</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">be_truthy</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Don&rsquo;t take the nomeclature as guideline, but the idea of extracting all the interactions to a centralized object to each page you have. So updating this object will impact all the scenarios.</p>
+
+<p>More about page objects here:</p>
+
+<ul>
+<li><a href="http://martinfowler.com/bliki/PageObject.html">Page Object Concept</a></li>
+<li><a href="https://github.com/cheezy/page-object">A gem to help you</a></li>
+</ul>
+
 ]]></content>
   </entry>
   
