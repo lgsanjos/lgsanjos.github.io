@@ -1,4 +1,0 @@
-User-agent: *
-Disallow: 
-
-Sitemap: http://lgsanjos.github.io/sitemap.xml 
