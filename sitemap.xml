@@ -1,28 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>http://lgsanjos.github.io/blog/2016/01/13/setup-integration-tests-from-scratch/</loc>
-    <lastmod>2016-01-13T22:13:26-02:00</lastmod>
+    <loc>http://lgsanjos.github.io/blog/2016/02/01/tech-debt-can-kill-your-pet-project/</loc>
+    <lastmod>2016-02-01T14:26:30+11:00</lastmod>
   </url>
   <url>
-    <loc>http://lgsanjos.github.io/blog/2015/09/21/using-bash-and-git-to-track-your-environment-growth/</loc>
-    <lastmod>2015-09-21T17:21:58-03:00</lastmod>
+    <loc>http://lgsanjos.github.io/blog/2016/01/14/setup-integration-tests-from-scratch/</loc>
+    <lastmod>2016-01-14T11:13:26+11:00</lastmod>
   </url>
   <url>
-    <loc>http://lgsanjos.github.io/blog/2015/09/14/reactjs-for-dummies/</loc>
-    <lastmod>2015-09-14T11:24:21-03:00</lastmod>
+    <loc>http://lgsanjos.github.io/blog/2015/09/22/using-bash-and-git-to-track-your-environment-growth/</loc>
+    <lastmod>2015-09-22T06:21:58+10:00</lastmod>
   </url>
   <url>
-    <loc>http://lgsanjos.github.io/blog/2015/09/10/understanding-promises/</loc>
-    <lastmod>2015-09-10T11:19:39-03:00</lastmod>
+    <loc>http://lgsanjos.github.io/blog/2015/09/15/reactjs-for-dummies/</loc>
+    <lastmod>2015-09-15T00:24:21+10:00</lastmod>
   </url>
   <url>
-    <loc>http://lgsanjos.github.io/blog/2015/08/23/the-goal-theory-of-constraints/</loc>
-    <lastmod>2015-08-23T17:32:30-03:00</lastmod>
+    <loc>http://lgsanjos.github.io/blog/2015/09/11/understanding-promises/</loc>
+    <lastmod>2015-09-11T00:19:39+10:00</lastmod>
   </url>
   <url>
-    <loc>http://lgsanjos.github.io/blog/2015/06/06/how-to-win-friends-and-influence-people/</loc>
-    <lastmod>2015-06-06T14:00:52-03:00</lastmod>
+    <loc>http://lgsanjos.github.io/blog/2015/08/24/the-goal-theory-of-constraints/</loc>
+    <lastmod>2015-08-24T06:32:30+10:00</lastmod>
+  </url>
+  <url>
+    <loc>http://lgsanjos.github.io/blog/2015/06/07/how-to-win-friends-and-influence-people/</loc>
+    <lastmod>2015-06-07T03:00:52+10:00</lastmod>
   </url>
   <url>
     <loc>http://lgsanjos.github.io/blog/archives/</loc>
@@ -44,6 +48,6 @@
   </url>
   <url>
     <loc>http://lgsanjos.github.io/posts/index.html</loc>
-    <lastmod>2016-01-28T09:52:13-02:00</lastmod>
+    <lastmod>2018-02-18T19:12:03+11:00</lastmod>
   </url>
 </urlset>

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: testing | lgsanjos' Blog]]></title>
   <link href="http://lgsanjos.github.io/blog/categories/testing/atom.xml" rel="self"/>
   <link href="http://lgsanjos.github.io/"/>
-  <updated>2016-01-28T09:56:35-02:00</updated>
+  <updated>2018-02-18T19:13:56+11:00</updated>
   <id>http://lgsanjos.github.io/</id>
   <author>
     <name><![CDATA[lgsanjos]]></name>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Setup Integration Tests with Capybara]]></title>
-    <link href="http://lgsanjos.github.io/blog/2016/01/13/setup-integration-tests-from-scratch/"/>
-    <updated>2016-01-13T22:13:26-02:00</updated>
-    <id>http://lgsanjos.github.io/blog/2016/01/13/setup-integration-tests-from-scratch</id>
+    <link href="http://lgsanjos.github.io/blog/2016/01/14/setup-integration-tests-from-scratch/"/>
+    <updated>2016-01-14T11:13:26+11:00</updated>
+    <id>http://lgsanjos.github.io/blog/2016/01/14/setup-integration-tests-from-scratch</id>
     <content type="html"><![CDATA[<p>This is a tutorial to setup an entire integration test project based on <strong>selenium</strong>, <strong>capybara</strong> and <strong>phantomjs</strong>. This is a purely black box text, so no matter the language you used on your website it should be helpful.</p>
 
 <!-- more -->
